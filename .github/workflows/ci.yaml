@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: clone the repo
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+
+      - name: install Flutter sdk
+        uses: subosito/flutter-action@48cafc24713cca54bbe03cdc3a423187d413aafa
+        with:
+          channel: 'master'
+
+      - name: version
+        run: flutter --version
+
+      - name: pub get
+        run: flutter pub get
+        working-directory: app
+
+      - name: flutter analyze
+        run: flutter analyze
+        working-directory: app
+
+      - name: flutter test
+        run: flutter test
+        working-directory: app
+
+      - name: integration test
+        run: flutter test integration_test/app_test.dart -d flutter-tester
+        working-directory: app
