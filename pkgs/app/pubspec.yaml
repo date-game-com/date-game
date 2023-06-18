@@ -11,12 +11,19 @@ dependencies:
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.13.1
   flutter_test:
     sdk: flutter
-  layerlens:
+  # layerlens: # Uncomment after merge of https://github.com/pq/surveyor/pull/46
   flutter_lints: ^2.0.0
   integration_test:
     sdk: flutter
 
 flutter:
   uses-material-design: true
+
+flutter_launcher_icons:
+  image_path: "assets/icon/icon.png"
+  android: true
+  ios: true
+  web: true
