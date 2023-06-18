@@ -47,4 +47,3 @@ migrate_working_dir/
 **/pubspec.lock
 **/.metadata
 app/macos/Flutter/Flutter-Debug.xcconfig
-pkgs/app/flutter_launcher_icons.yaml

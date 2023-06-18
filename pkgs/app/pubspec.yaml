@@ -23,7 +23,7 @@ flutter:
   uses-material-design: true
 
 flutter_launcher_icons:
-  image_path: "assets/icon.png"
   android: true
   ios: true
-  web: true
+  remove_alpha_ios: true
+  image_path: 'assets/icon/icon.png'

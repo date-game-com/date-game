@@ -5,14 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "app",
+            "name": "theApp",
             "request": "launch",
             "type": "dart",
-            "program": "app/lib/main.dart",
+            "program": "pkgs/app/lib/main.dart",
         },
         {
-            "name": "opened test or devtools",
-            "cwd": "devtools_app",
+            "name": "test",
+            "cwd": "pkgs/app",
             "request": "launch",
             "type": "dart",
         },

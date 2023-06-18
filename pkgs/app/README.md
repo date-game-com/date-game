@@ -6,9 +6,8 @@ https://date-game-com.web.app
 firebase deploy
 ```
 
-## Icons
+## Regenerate Icons
 
 ```
-dart run flutter_launcher_icons:generate --override
 dart run flutter_launcher_icons
 ```
