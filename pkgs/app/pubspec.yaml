@@ -22,8 +22,14 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
+# https://pub.dev/packages/flutter_launcher_icons
 flutter_launcher_icons:
-  android: true
-  ios: true
   remove_alpha_ios: true
   image_path: 'assets/icon/icon.png'
+  android: true
+  ios: true
+  web:
+    generate: true
+    # image_path: "path/to/image.png"
+    # background_color: "#hexcode"
+    # theme_color: "#hexcode"
