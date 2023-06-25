@@ -1,4 +1,4 @@
-package com.example.app
+package com.date-game
 
 import io.flutter.embedding.android.FlutterActivity
 
