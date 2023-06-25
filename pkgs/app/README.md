@@ -22,7 +22,7 @@ firebase deploy
 flutter build appbundle
 ```
 
-See result at `build/app/outputs/bundle/release/app-release.aab`.
+Drop `build/app/outputs/bundle/release/app-release.aab` to 'Internal testing > App bundles.'.
 
 See signing steps here: https://stackoverflow.com/questions/76502832/how-to-sign-flutter-app-bundle-in-order-to-publish-it-to-play-store
 
@@ -34,7 +34,7 @@ flutter build ipa
 
 Drop `build/ios/ipa/*.ipa` to Transporter.
 
-## Regenerate Icons
+## Regenerate icons
 
 ```
 dart run flutter_launcher_icons
@@ -42,11 +42,10 @@ dart run flutter_launcher_icons
 
 Separately update launch image in `ios/Runner/Assets.xcassets/LaunchImage.imageset`.
 
-## Rename for android.
+## Package renaming for android
 
 https://pub.dev/packages/rename
 
 ```
-flutter pub global run rename --bundleId com.dategame
-flutter pub global run rename --appname "Date Game"
+run change_app_package_name:main com.dategame
 ```
