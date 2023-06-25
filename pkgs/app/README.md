@@ -41,3 +41,7 @@ dart run flutter_launcher_icons
 ```
 
 Separately update launch image in `ios/Runner/Assets.xcassets/LaunchImage.imageset`.
+
+## Rename app.
+
+https://pub.dev/packages/rename
