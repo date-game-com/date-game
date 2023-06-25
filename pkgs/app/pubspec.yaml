@@ -6,9 +6,11 @@ environment:
   sdk: '>=3.1.0-160.0.dev <4.0.0'
 
 dependencies:
+  firebase_messaging: ^14.6.3
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
+
 
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1
