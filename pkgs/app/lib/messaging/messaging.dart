@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-import '../firebase_options.dart';
+import '../shared/firebase_options.dart';
 import '../shared/utils.dart';
 
 bool _initialized = false;
