@@ -36,10 +36,10 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() async {
+  Future<void> _incrementCounter() async {
+    await helloMessaging();
+    setState(() {
       _counter++;
-      await helloMessaging();
     });
   }
 
