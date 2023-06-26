@@ -13,14 +13,16 @@ Future<void> initializeMessaging() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  FirebaseMessaging.instance.onTokenRefresh.listen((String fcmToken) {
-    // This callback is fired at each app startup and whenever a new
-    // token is generated.
-    debugPrint('Token refresh: $fcmToken');
-    // TODO: If necessary send token to application server.
-  }).onError((err) {
-    debugPrint('Error getting token: $err');
-  });
+  FirebaseMessaging.instance.setAutoInitEnabled(true);
+
+  // FirebaseMessaging.instance.onTokenRefresh.listen((String fcmToken) {
+  //   // This callback is fired at each app startup and whenever a new
+  //   // token is generated.
+  //   debugPrint('Token refresh: $fcmToken');
+  //   // TODO: If necessary send token to application server.
+  // }).onError((err) {
+  //   debugPrint('Error getting token: $err');
+  // });
 }
 
 Future<void> helloMessaging() async {
