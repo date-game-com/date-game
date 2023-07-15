@@ -1,15 +1,15 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+import 'firebase_options.dart';
 import 'logic/messaging/messaging.dart';
-import 'logic/shared/firebase_options.dart';
 
 Future<void> main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
+  //await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   // await initializeMessaging();
   runApp(const App());
 }
@@ -43,7 +43,6 @@ class HomePageState extends State<HomePage> {
   int _counter = 0;
 
   Future<void> _incrementCounter() async {
-    await helloMessaging();
     setState(() {
       _counter++;
     });
