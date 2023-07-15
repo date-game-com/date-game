@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>170500034711-asfb9kh4b1vo4mm5nsskl46tis38c8ek.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.170500034711-asfb9kh4b1vo4mm5nsskl46tis38c8ek</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDuvrG6zSBknSVqhQnC62HGz6-47Tw2o-A</string>
+	<key>GCM_SENDER_ID</key>
+	<string>170500034711</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.dategame.RunnerTests</string>
+	<key>PROJECT_ID</key>
+	<string>date-game-com</string>
+	<key>STORAGE_BUCKET</key>
+	<string>date-game-com.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:170500034711:ios:e4e2b58193e0b1054399d2</string>
+</dict>
+</plist>

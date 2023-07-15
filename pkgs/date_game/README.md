@@ -46,10 +46,10 @@ Drop `build/ios/ipa/*.ipa` to Transporter.
   - test
   - integration_test
   - assets
-  - .firebaserc, firebase.json
 3. Update description in web/index
 4. Update package name
-5. Update icone
+5. Update icon
+6. Configure Firebase
 4. Run for all platforms
 
 
@@ -68,7 +68,7 @@ cp -fr assets/icon/icon.png ios/Runner/Assets.xcassets/LaunchImage.imageset/Laun
 
 ```
 
-### Package renaming
+### Rename packages
 
 For android:
 
@@ -84,4 +84,8 @@ For iOS and macos replace `com.example.dateGame` with 'com.dategame`
 
 Follow https://firebase.google.com/docs/flutter/setup
 
+### Troubleshooting
 
+```
+sudo gem install cocoapods && pod install
+```
