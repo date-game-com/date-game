@@ -86,6 +86,9 @@ Follow https://firebase.google.com/docs/flutter/setup
 
 ### Troubleshooting
 
+Commands that may help:
+
 ```
+open ios/Runner.xcworkspace
 sudo gem install cocoapods && pod install
 ```
