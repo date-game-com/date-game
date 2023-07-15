@@ -1,10 +1,15 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-import 'messaging/messaging.dart';
+import 'logic/messaging/messaging.dart';
+import 'logic/shared/firebase_options.dart';
 
 Future<void> main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initializeMessaging();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  // await initializeMessaging();
   runApp(const App());
 }
 

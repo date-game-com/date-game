@@ -8,11 +8,6 @@ bool _initialized = false;
 
 Future<void> initializeMessaging() async {
   if (_initialized) return;
-
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
   FirebaseMessaging.instance.setAutoInitEnabled(true);
 
   // FirebaseMessaging.instance.onTokenRefresh.listen((String fcmToken) {
