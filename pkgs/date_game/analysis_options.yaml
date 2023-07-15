@@ -2,10 +2,10 @@ include: package:flutter_lints/flutter.yaml
 
 linter:
   rules:
-    - await_only_futures: true
-    - prefer-async-await: true
-    - prefer_single_quotes: true
-    - unawaited_futures: true
+    - await_only_futures
+    - prefer-async-await
+    - prefer_single_quotes
+    - unawaited_futures
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

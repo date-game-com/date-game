@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
+import '../shared/exceptions.dart';
+
 class AuthController {
   static final AuthController instance = AuthController();
 
@@ -14,8 +16,9 @@ class AuthController {
 
   ValueNotifier<User?> user = ValueNotifier(null);
 
-  Future<void> signIn() async {
-    await FirebaseAuth.instance.signInAnonymously();
+  Future<void> signIn(String email, String password) async {
+    await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password);
   }
 
   Future<void> signOut() async {
@@ -23,10 +26,20 @@ class AuthController {
     await FirebaseAuth.instance.signOut();
   }
 
-  Future<void> signUp(String email, String password) async {
-    user.value = null;
-    await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(email: email, password: password);
+  Future<void> signUp(String email) async {
+    String randomPassword() => DateTime.now().microsecondsSinceEpoch.toString();
+
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: email, password: randomPassword());
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      if (e.code != FirebaseErrorCodes.emailAlreadyInUse.value) rethrow;
+    }
+  }
+
+  Future<void> resetPassword(String email) async {
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
   }
 
   Future<void> delete() async {

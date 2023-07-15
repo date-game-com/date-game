@@ -1,6 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-import '../shared/utils.dart';
+import '../shared/primitives/utils.dart';
 
 bool _initialized = false;
 

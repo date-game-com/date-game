@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:date_game/logic/auth/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -175,15 +176,12 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
   }
 
   Widget _buildCreateAccountScreen(BuildContext context) {
-    final submit = () async {
+    submit() async {
       try {
         setState(() {
           _loading = true;
         });
-        await fauiRegisterUser(
-          apiKey: widget.firebaseApiKey,
-          email: _emailcontroller.text,
-        );
+        await AuthController.instance.signUp(_emailcontroller.text);
         setState(() {
           _loading = false;
         });
@@ -196,7 +194,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           _loading = false;
         });
       }
-    };
+    }
 
     return Column(children: <Widget>[
       _buildTextBox(_emailcontroller, false, _emailNode, null, 'Email', submit),
