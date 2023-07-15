@@ -47,3 +47,4 @@ migrate_working_dir/
 **/pubspec.lock
 **/.metadata
 app/macos/Flutter/Flutter-Debug.xcconfig
+pkgs/date_game/macos/Podfile.lock
