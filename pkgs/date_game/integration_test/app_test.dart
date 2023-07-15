@@ -18,7 +18,7 @@ import 'package:integration_test/integration_test.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('Snapshots are not taken after reaching limit', (tester) async {
+  testWidgets('Smoke', (tester) async {
     app.main([]);
     await tester.pumpAndSettle();
 
