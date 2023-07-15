@@ -54,7 +54,14 @@ Drop `build/ios/ipa/*.ipa` to Transporter.
 dart run flutter_launcher_icons
 ```
 
-Separately update launch image in `ios/Runner/Assets.xcassets/LaunchImage.imageset`.
+Separately update launch image in `ios/Runner/Assets.xcassets/LaunchImage.imageset`:
+
+```
+cp -fr assets/icon/icon.png ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage.png
+cp -fr assets/icon/icon.png ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@2x.png
+cp -fr assets/icon/icon.png ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@3x.png
+
+```
 
 ### Package renaming
 
