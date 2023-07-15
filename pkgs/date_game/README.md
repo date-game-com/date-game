@@ -41,7 +41,12 @@ Drop `build/ios/ipa/*.ipa` to Transporter.
 2. Copy pubspec, gitignore, analysis_options, README
 3. Delete platforms except chrome, mac, ios, android
 3. Run pub get
-4. Copy lib, test, integration_test, assets
+4. Copy
+  - lib
+  - test
+  - integration_test
+  - assets
+  - .firebaserc, firebase.json
 3. Update description in web/index
 4. Update package name
 5. Update icone
@@ -65,8 +70,18 @@ cp -fr assets/icon/icon.png ios/Runner/Assets.xcassets/LaunchImage.imageset/Laun
 
 ### Package renaming
 
+For android:
+
 https://pub.dev/packages/rename
 
 ```
 dart run change_app_package_name:main com.dategame
 ```
+
+For iOS and macos replace `com.example.dateGame` with 'com.dategame`
+
+### Configure Firebase
+
+Follow https://firebase.google.com/docs/flutter/setup
+
+
