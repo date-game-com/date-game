@@ -3,7 +3,9 @@ include: package:flutter_lints/flutter.yaml
 linter:
   rules:
     - await_only_futures
-    - prefer-async-await
+    - directives_ordering
+    - implementation_imports
+    - prefer_relative_imports
     - prefer_single_quotes
     - unawaited_futures
 

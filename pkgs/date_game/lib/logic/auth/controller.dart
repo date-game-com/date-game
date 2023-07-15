@@ -16,7 +16,7 @@ class AuthController {
 
   ValueNotifier<User?> user = ValueNotifier(null);
 
-  Future<void> signIn(String email, String password) async {
+  Future<void> signIn({required String email, required String password}) async {
     await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
   }

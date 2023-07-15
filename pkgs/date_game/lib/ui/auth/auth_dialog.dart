@@ -1,8 +1,10 @@
 import 'dart:math';
 
-import 'package:date_game/logic/auth/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import '../../logic/auth/controller.dart';
+import '../../logic/shared/exceptions.dart';
 
 class FauiAuthScreen extends StatefulWidget {
   final VoidCallback onExit;
@@ -37,7 +39,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
   FocusNode? _focusNodeCurrent;
   final FocusNode _emailNode = FocusNode();
   final FocusNode _passwordNode = FocusNode();
-  final TextEditingController _emailcontroller = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordcontroller = TextEditingController();
 
   @override
@@ -126,7 +128,10 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     }
   }
 
-  static Widget _buildError(BuildContext context, String error) {
+  static Widget _mayBeBuildError(BuildContext context, String? error) {
+    if (error == null) {
+      return Container();
+    }
     return Text(
       error,
       style: TextStyle(color: Theme.of(context).colorScheme.error),
@@ -139,22 +144,23 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     setState(() => _focusNodeCurrent = next);
   }
 
-  Widget _buildTextBox(
-      TextEditingController controller,
-      bool hideFieldValue,
-      FocusNode currentNode,
-      FocusNode nextNode,
-      String fieldName,
-      Future<Widget> Function() submit) {
+  Widget _buildTextBox({
+    required TextEditingController controller,
+    required bool hideFieldValue,
+    required FocusNode currentNode,
+    required FocusNode? nextNode,
+    required String fieldName,
+    required Future<void> Function() submit,
+  }) {
     handleKey(RawKeyEvent key) {
       if (key is! RawKeyDownEvent) {
         return;
       }
-      setState(() => _error = "");
+      setState(() => _error = null);
       if (key.logicalKey == LogicalKeyboardKey.enter) {
         submit();
       }
-      if (key.logicalKey == LogicalKeyboardKey.tab) {
+      if (key.logicalKey == LogicalKeyboardKey.tab && nextNode != null) {
         _changeFocus(currentNode, nextNode);
       }
     }
@@ -181,87 +187,102 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
         setState(() {
           _loading = true;
         });
-        await AuthController.instance.signUp(_emailcontroller.text);
+        await AuthController.instance.signUp(_emailController.text);
         setState(() {
           _loading = false;
         });
 
-        _switchScreen(_AuthScreen.verifyEmail, _emailcontroller.text);
+        _switchScreen(_AuthScreen.verifyEmail, _emailController.text);
       } catch (e) {
         setState(() {
-          _error = FauiError.exceptionToUiMessage(e);
-          _email = _emailcontroller.text;
+          _error = exceptionToUiMessage(e);
+          _email = _emailController.text;
           _loading = false;
         });
       }
     }
 
     return Column(children: <Widget>[
-      _buildTextBox(_emailcontroller, false, _emailNode, null, 'Email', submit),
-      _buildError(context, _error),
-      if (_loading == true) _AuthProgress('creating account...'),
+      _buildTextBox(
+        controller: _emailController,
+        hideFieldValue: false,
+        currentNode: _emailNode,
+        nextNode: null,
+        fieldName: 'Email',
+        submit: submit,
+      ),
+      _mayBeBuildError(context, _error),
+      if (_loading == true) const _AuthProgress('creating account...'),
       if (_loading == false)
         ElevatedButton(
-          child: const Text('Create Account'),
           onPressed: submit,
+          child: const Text('Create Account'),
         ),
       if (_loading == false)
         TextButton(
             child: const Text('Have account? Sign in.'),
             onPressed: () {
-              _switchScreen(_AuthScreen.signIn, _emailcontroller.text);
+              _switchScreen(_AuthScreen.signIn, _emailController.text);
             }),
     ]);
   }
 
   Widget _buildSignInScreen(BuildContext context) {
-    final submit = () async {
+    submit() async {
       try {
         setState(() {
           _loading = true;
         });
-        FauiUser user = await fauiSignInUser(
-          apiKey: widget.firebaseApiKey,
-          email: _emailcontroller.text,
-          password: _passwordcontroller.text,
-        );
+        await AuthController.instance.signIn(
+            email: _emailController.text, password: _passwordcontroller.text);
         setState(() {
           _loading = false;
         });
-        afterAuthorized(context, user);
       } catch (e) {
         setState(() {
-          _error = FauiError.exceptionToUiMessage(e);
-          _email = _emailcontroller.text;
+          _error = exceptionToUiMessage(e);
+          _email = _emailController.text;
           _loading = false;
         });
       }
-    };
+    }
 
     return Column(children: <Widget>[
       _buildTextBox(
-          _emailcontroller, false, _emailNode, _passwordNode, 'Email', submit),
+        controller: _emailController,
+        hideFieldValue: false,
+        currentNode: _emailNode,
+        nextNode: _passwordNode,
+        fieldName: 'Email',
+        submit: submit,
+      ),
       _buildTextBox(
-          _passwordcontroller, true, _passwordNode, null, 'Password', submit),
-      _buildError(context, _error),
-      if (_loading == true) _AuthProgress('signing in...'),
+        controller: _passwordcontroller,
+        hideFieldValue: true,
+        currentNode: _passwordNode,
+        nextNode: null,
+        fieldName: 'Password',
+        submit: submit,
+      ),
+      _mayBeBuildError(context, _error),
+      if (_loading == true) const _AuthProgress('signing in...'),
       if (_loading == false)
-        RaisedButton(
-          child: const Text('Sign In'),
+        ElevatedButton(
           onPressed: submit,
+          child: const Text('Sign In'),
         ),
       if (_loading == false)
         TextButton(
           child: const Text('Create Account'),
           onPressed: () {
-            _switchScreen(_AuthScreen.createAccount, _emailcontroller.text);
+            _switchScreen(_AuthScreen.createAccount, _emailController.text);
           },
         ),
       if (_loading == false)
         TextButton(
           child: const Text('Forgot Password?'),
           onPressed: () {
-            _switchScreen(_AuthScreen.forgotPassword, _emailcontroller.text);
+            _switchScreen(_AuthScreen.forgotPassword, _emailController.text);
           },
         ),
     ]);
@@ -273,7 +294,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Text(
-          "Verification link was sent to $email",
+          'Verification link was sent to $email',
           textAlign: TextAlign.center,
         ),
         ElevatedButton(
@@ -292,7 +313,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Text(
-          "Link to reset your password was sent to $email",
+          'Link to reset your password was sent to $email',
           textAlign: TextAlign.center,
         ),
         ElevatedButton(
@@ -306,38 +327,42 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
   }
 
   Widget _buildForgotPasswordScreen(BuildContext context, String email) {
-    final submit = () async {
+    submit() async {
       try {
         setState(() {
           _loading = true;
         });
-        await fauiSendResetLink(
-          apiKey: widget.firebaseApiKey,
-          email: _emailcontroller.text,
-        );
+        await AuthController.instance.resetPassword(_emailController.text);
         setState(() {
           _loading = false;
         });
-        _switchScreen(_AuthScreen.resetPassword, _emailcontroller.text);
+        _switchScreen(_AuthScreen.resetPassword, _emailController.text);
       } catch (e) {
         setState(() {
-          _error = FauiError.exceptionToUiMessage(e);
-          _email = _emailcontroller.text;
+          _error = exceptionToUiMessage(e);
+          _email = _emailController.text;
           _loading = false;
         });
       }
-    };
+    }
 
     return Column(
       children: <Widget>[
         _buildTextBox(
-            _emailcontroller, false, _emailNode, null, 'Email', submit),
-        _buildError(context, _error),
-        if (_loading == true) _AuthProgress('sending password reset link...'),
+          controller: _emailController,
+          hideFieldValue: false,
+          currentNode: _emailNode,
+          nextNode: null,
+          fieldName: 'Email',
+          submit: submit,
+        ),
+        _mayBeBuildError(context, _error),
+        if (_loading == true)
+          const _AuthProgress('sending password reset link...'),
         if (_loading == false)
           ElevatedButton(
-            child: const Text('Send Password Reset Link'),
             onPressed: submit,
+            child: const Text('Send Password Reset Link'),
           ),
         if (_loading == false)
           TextButton(

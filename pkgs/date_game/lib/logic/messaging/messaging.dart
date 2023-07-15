@@ -6,7 +6,7 @@ bool _initialized = false;
 
 Future<void> initializeMessaging() async {
   if (_initialized) return;
-  FirebaseMessaging.instance.setAutoInitEnabled(true);
+  await FirebaseMessaging.instance.setAutoInitEnabled(true);
 
   // FirebaseMessaging.instance.onTokenRefresh.listen((String fcmToken) {
   //   // This callback is fired at each app startup and whenever a new
