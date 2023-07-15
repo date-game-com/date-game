@@ -1,0 +1,36 @@
+name: date_game
+publish_to: 'none'
+version: 1.0.1
+
+environment:
+  sdk: '>=3.1.0-160.0.dev <4.0.0'
+
+dependencies:
+  firebase_core: ^2.14.0
+  firebase_messaging: ^14.6.3
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  firebase_auth: ^4.7.0
+
+dev_dependencies:
+  change_app_package_name: ^1.1.0
+  flutter_launcher_icons: ^0.13.1
+  flutter_test:
+    sdk: flutter
+  # layerlens: # Uncomment after merge of https://github.com/pq/surveyor/pull/46
+  flutter_lints: ^2.0.0
+  integration_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+# https://pub.dev/packages/flutter_launcher_icons
+flutter_launcher_icons:
+  remove_alpha_ios: true
+  image_path: 'assets/icon/icon.png'
+  android: true
+  ios: true
+  web:
+    generate: true

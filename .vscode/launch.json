@@ -8,11 +8,11 @@
             "name": "theApp",
             "request": "launch",
             "type": "dart",
-            "program": "pkgs/app/lib/main.dart",
+            "program": "pkgs/date_game/lib/main.dart",
         },
         {
             "name": "test",
-            "cwd": "pkgs/app",
+            "cwd": "pkgs/date_game",
             "request": "launch",
             "type": "dart",
         },
