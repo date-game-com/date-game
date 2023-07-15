@@ -150,10 +150,10 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
         return;
       }
       setState(() => _error = "");
-      if (key.physicalKey.debugName == 'Enter') {
+      if (key.logicalKey == LogicalKeyboardKey.enter) {
         submit();
       }
-      if ((key.logicalKey.debugName == 'Tab') && (nextNode != null)) {
+      if (key.logicalKey == LogicalKeyboardKey.tab) {
         _changeFocus(currentNode, nextNode);
       }
     }
