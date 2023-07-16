@@ -11,10 +11,15 @@ enum AuthState {
 }
 
 class AuthController {
-  static final AuthController instance = AuthController();
+  static late final AuthController instance;
+
+  void initialize() {
+    instance = AuthController();
+  }
 
   AuthController() {
     void handleUserChanged(User? newUser) {
+      print('setting $newUser');
       _user.value = newUser;
       _state.value = newUser == null ? AuthState.signedOut : AuthState.signedIn;
     }

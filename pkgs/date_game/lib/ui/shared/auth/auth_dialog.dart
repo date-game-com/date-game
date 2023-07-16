@@ -38,6 +38,8 @@ class _AuthScreenState extends State<AuthScreen> {
   void initState() {
     super.initState();
 
+    // {AuthState.wantToSignIn, AuthState.wantToSignUp}.contains(state)
+
     if (AuthController.instance.state.value == AuthState.wantToSignUp) {
       _authScreen = _AuthScreen.createAccount;
     }
