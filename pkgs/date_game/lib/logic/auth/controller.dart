@@ -3,24 +3,36 @@ import 'package:flutter/foundation.dart';
 
 import '../shared/exceptions.dart';
 
+enum AuthState {
+  signedOut,
+  signedIn,
+  wantToSignIn,
+}
+
 class AuthController {
   static final AuthController instance = AuthController();
 
   AuthController() {
-    void handleUserChanged(User? newUser) => user.value = newUser;
+    void handleUserChanged(User? newUser) {
+      user.value = newUser;
+      state.value = newUser == null ? AuthState.signedOut : AuthState.signedIn;
+    }
 
     FirebaseAuth.instance.authStateChanges().listen(handleUserChanged);
     FirebaseAuth.instance.userChanges().listen(handleUserChanged);
     FirebaseAuth.instance.idTokenChanges().listen(handleUserChanged);
   }
 
-  ValueNotifier<User?> user = ValueNotifier(null);
+  final ValueNotifier<User?> user = ValueNotifier(null);
+
+  final ValueNotifier<AuthState> state = ValueNotifier(AuthState.signedOut);
 
   bool get wantToSignIn => _wantToSignIn.value;
   final ValueNotifier<bool> _wantToSignIn = ValueNotifier(false);
   void setWantToSignIn(bool value) {
     assert(user.value == null);
-    _wantToSignIn.value = value;
+    assert(state.value == AuthState.signedOut);
+    state.value = AuthState.wantToSignIn;
   }
 
   Future<void> signIn({required String email, required String password}) async {
