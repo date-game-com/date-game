@@ -19,7 +19,7 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets('Smoke', (tester) async {
-    app.main([]);
+    await app.main([]);
     await tester.pumpAndSettle();
 
     await Future.delayed(const Duration(seconds: 10));
