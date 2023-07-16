@@ -6,20 +6,16 @@ import 'package:flutter/services.dart';
 import '../../../logic/auth/controller.dart';
 import '../../../logic/shared/exceptions.dart';
 
-class FauiAuthScreen extends StatefulWidget {
-  final VoidCallback onExit;
-  final String firebaseApiKey;
-  final bool startWithRegistration;
+class AuthScreen extends StatefulWidget {
+  final VoidCallback? onExit;
 
-  const FauiAuthScreen(
+  const AuthScreen({
     this.onExit,
-    this.firebaseApiKey,
-    this.startWithRegistration, {
     super.key,
   });
 
   @override
-  State<FauiAuthScreen> createState() => _FauiAuthScreenState();
+  State<AuthScreen> createState() => _AuthScreenState();
 }
 
 enum _AuthScreen {
@@ -30,7 +26,7 @@ enum _AuthScreen {
   resetPassword,
 }
 
-class _FauiAuthScreenState extends State<FauiAuthScreen> {
+class _AuthScreenState extends State<AuthScreen> {
   _AuthScreen _authScreen = _AuthScreen.signIn;
   String? _error;
   String? _email;
@@ -46,7 +42,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
   void initState() {
     super.initState();
 
-    if (widget.startWithRegistration) {
+    if (AuthController.instance.state.value == AuthState.wantToSignUp) {
       _authScreen = _AuthScreen.createAccount;
     }
   }
@@ -93,9 +89,10 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
       _focusNodeCurrent = null;
     }
     return _AuthFrame(
-        title: _screenTitle(),
-        content: _getScreen(context),
-        onColse: widget.onExit);
+      title: _screenTitle(),
+      content: _getScreen(context),
+      onClose: widget.onExit,
+    );
   }
 
   String _screenTitle() {
@@ -166,19 +163,20 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     }
 
     return RawKeyboardListener(
-        focusNode: FocusNode(),
-        onKey: (key) => handleKey(key),
-        child: TextFormField(
-          focusNode: currentNode,
-          obscureText: hideFieldValue,
-          controller: controller,
-          autofocus: true,
-          onEditingComplete: () => {},
-          // it is important to have this handler to catch 'Enter'
-          decoration: InputDecoration(
-            labelText: fieldName,
-          ),
-        ));
+      focusNode: FocusNode(),
+      onKey: (key) => handleKey(key),
+      child: TextFormField(
+        focusNode: currentNode,
+        obscureText: hideFieldValue,
+        controller: controller,
+        autofocus: true,
+        onEditingComplete: () => {},
+        // it is important to have this handler to catch 'Enter'
+        decoration: InputDecoration(
+          labelText: fieldName,
+        ),
+      ),
+    );
   }
 
   Widget _buildCreateAccountScreen(BuildContext context) {
@@ -202,29 +200,32 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
       }
     }
 
-    return Column(children: <Widget>[
-      _buildTextBox(
-        controller: _emailController,
-        hideFieldValue: false,
-        currentNode: _emailNode,
-        nextNode: null,
-        fieldName: 'Email',
-        submit: submit,
-      ),
-      _mayBeBuildError(context, _error),
-      if (_loading == true) const _AuthProgress('creating account...'),
-      if (_loading == false)
-        ElevatedButton(
-          onPressed: submit,
-          child: const Text('Create Account'),
+    return Column(
+      children: <Widget>[
+        _buildTextBox(
+          controller: _emailController,
+          hideFieldValue: false,
+          currentNode: _emailNode,
+          nextNode: null,
+          fieldName: 'Email',
+          submit: submit,
         ),
-      if (_loading == false)
-        TextButton(
+        _mayBeBuildError(context, _error),
+        if (_loading == true) const _AuthProgress('creating account...'),
+        if (_loading == false)
+          ElevatedButton(
+            onPressed: submit,
+            child: const Text('Create Account'),
+          ),
+        if (_loading == false)
+          TextButton(
             child: const Text('Have account? Sign in.'),
             onPressed: () {
               _switchScreen(_AuthScreen.signIn, _emailController.text);
-            }),
-    ]);
+            },
+          ),
+      ],
+    );
   }
 
   Widget _buildSignInScreen(BuildContext context) {
@@ -234,7 +235,9 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           _loading = true;
         });
         await AuthController.instance.signIn(
-            email: _emailController.text, password: _passwordcontroller.text);
+          email: _emailController.text,
+          password: _passwordcontroller.text,
+        );
         setState(() {
           _loading = false;
         });
@@ -247,45 +250,47 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
       }
     }
 
-    return Column(children: <Widget>[
-      _buildTextBox(
-        controller: _emailController,
-        hideFieldValue: false,
-        currentNode: _emailNode,
-        nextNode: _passwordNode,
-        fieldName: 'Email',
-        submit: submit,
-      ),
-      _buildTextBox(
-        controller: _passwordcontroller,
-        hideFieldValue: true,
-        currentNode: _passwordNode,
-        nextNode: null,
-        fieldName: 'Password',
-        submit: submit,
-      ),
-      _mayBeBuildError(context, _error),
-      if (_loading == true) const _AuthProgress('signing in...'),
-      if (_loading == false)
-        ElevatedButton(
-          onPressed: submit,
-          child: const Text('Sign In'),
+    return Column(
+      children: <Widget>[
+        _buildTextBox(
+          controller: _emailController,
+          hideFieldValue: false,
+          currentNode: _emailNode,
+          nextNode: _passwordNode,
+          fieldName: 'Email',
+          submit: submit,
         ),
-      if (_loading == false)
-        TextButton(
-          child: const Text('Create Account'),
-          onPressed: () {
-            _switchScreen(_AuthScreen.createAccount, _emailController.text);
-          },
+        _buildTextBox(
+          controller: _passwordcontroller,
+          hideFieldValue: true,
+          currentNode: _passwordNode,
+          nextNode: null,
+          fieldName: 'Password',
+          submit: submit,
         ),
-      if (_loading == false)
-        TextButton(
-          child: const Text('Forgot Password?'),
-          onPressed: () {
-            _switchScreen(_AuthScreen.forgotPassword, _emailController.text);
-          },
-        ),
-    ]);
+        _mayBeBuildError(context, _error),
+        if (_loading == true) const _AuthProgress('signing in...'),
+        if (_loading == false)
+          ElevatedButton(
+            onPressed: submit,
+            child: const Text('Sign In'),
+          ),
+        if (_loading == false)
+          TextButton(
+            child: const Text('Create Account'),
+            onPressed: () {
+              _switchScreen(_AuthScreen.createAccount, _emailController.text);
+            },
+          ),
+        if (_loading == false)
+          TextButton(
+            child: const Text('Forgot Password?'),
+            onPressed: () {
+              _switchScreen(_AuthScreen.forgotPassword, _emailController.text);
+            },
+          ),
+      ],
+    );
   }
 
   Widget _buildVerifyEmailScreen(BuildContext context, String email) {
@@ -391,18 +396,20 @@ class _AuthProgress extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: MediaQuery.of(context).size.height * 0.20,
-        width: MediaQuery.of(context).size.width * 0.15,
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              const CircularProgressIndicator(),
-              const SizedBox(height: 20),
-              Text(
-                displayMessage,
-                textAlign: TextAlign.center,
-              ),
-            ]));
+      height: MediaQuery.of(context).size.height * 0.20,
+      width: MediaQuery.of(context).size.width * 0.15,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          const CircularProgressIndicator(),
+          const SizedBox(height: 20),
+          Text(
+            displayMessage,
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -410,12 +417,12 @@ class _AuthFrame extends StatelessWidget {
   const _AuthFrame({
     required this.title,
     required this.content,
-    required this.onColse,
+    required this.onClose,
   });
 
   final String title;
   final Widget content;
-  final VoidCallback onColse;
+  final VoidCallback? onClose;
 
   @override
   Widget build(BuildContext context) {
@@ -429,34 +436,35 @@ class _AuthFrame extends StatelessWidget {
 
     final style = Theme.of(context).textTheme.titleLarge;
     return Scaffold(
-        body: Container(
-      padding: EdgeInsets.symmetric(vertical: vInsets, horizontal: hInsets),
-      width: screenWidth,
-      height: screenHeight,
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(
-                    Icons.close,
-                    size: style?.fontSize,
+      body: Container(
+        padding: EdgeInsets.symmetric(vertical: vInsets, horizontal: hInsets),
+        width: screenWidth,
+        height: screenHeight,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(
+                      Icons.close,
+                      size: style?.fontSize,
+                    ),
+                    onPressed: onClose,
                   ),
-                  onPressed: onColse,
-                ),
-              ],
-            ),
-            Text(
-              title,
-              style: style,
-            ),
-            content,
-          ],
+                ],
+              ),
+              Text(
+                title,
+                style: style,
+              ),
+              content,
+            ],
+          ),
         ),
       ),
-    ));
+    );
   }
 }

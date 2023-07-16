@@ -7,6 +7,7 @@ enum AuthState {
   signedOut,
   signedIn,
   wantToSignIn,
+  wantToSignUp,
 }
 
 class AuthController {
@@ -29,10 +30,16 @@ class AuthController {
 
   bool get wantToSignIn => _wantToSignIn.value;
   final ValueNotifier<bool> _wantToSignIn = ValueNotifier(false);
-  void setWantToSignIn(bool value) {
+  void requestSignIn() {
     assert(user.value == null);
     assert(state.value == AuthState.signedOut);
     state.value = AuthState.wantToSignIn;
+  }
+
+  void cancelSignIn() {
+    assert(user.value == null);
+    assert(state.value == AuthState.wantToSignIn);
+    state.value = AuthState.signedOut;
   }
 
   Future<void> signIn({required String email, required String password}) async {

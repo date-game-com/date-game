@@ -13,10 +13,11 @@ class UserStatus extends StatelessWidget {
         final displayName = user?.displayName;
         if (displayName == null) {
           return TextButton(
-              onPressed: () {
-                AuthController.instance.setWantToSignIn(true);
-              },
-              child: const Text('Log in'));
+            onPressed: () {
+              AuthController.instance.requestSignIn();
+            },
+            child: const Text('Log in'),
+          );
         } else {
           return Text(displayName);
         }

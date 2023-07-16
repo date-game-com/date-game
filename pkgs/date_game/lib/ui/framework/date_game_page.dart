@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../logic/auth/controller.dart';
+import '../screens/dashboard_screen.dart';
+import '../screens/landing_screen.dart';
+import '../shared/auth/auth_dialog.dart';
 import '../shared/auth/user_status.dart';
 
 class DateGamePage extends StatelessWidget {
@@ -19,11 +23,29 @@ class DateGamePage extends StatelessWidget {
   }
 }
 
-class _DateGameBody extends StatelessWidget {
+class _DateGameBody extends StatefulWidget {
   const _DateGameBody();
 
   @override
+  State<_DateGameBody> createState() => _DateGameBodyState();
+}
+
+class _DateGameBodyState extends State<_DateGameBody> {
+  @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return ValueListenableBuilder(
+      valueListenable: AuthController.instance.state,
+      builder: (context, state, ___) {
+        switch (state) {
+          case AuthState.signedIn:
+            return const DashboardScreen();
+          case AuthState.signedOut:
+            return const LandingScreen();
+          case AuthState.wantToSignIn:
+          case AuthState.wantToSignUp:
+            return AuthScreen(onExit: () => setState(() {}));
+        }
+      },
+    );
   }
 }
