@@ -18,7 +18,7 @@ dev_dependencies:
   flutter_launcher_icons: ^0.13.1
   flutter_test:
     sdk: flutter
-  # layerlens: # Uncomment after merge of https://github.com/pq/surveyor/pull/46
+  layerlens: ^1.0.13
   flutter_lints: ^2.0.0
   integration_test:
     sdk: flutter

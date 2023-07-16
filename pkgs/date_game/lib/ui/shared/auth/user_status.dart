@@ -62,6 +62,12 @@ class _UserDropDown extends StatelessWidget {
                 },
                 child: const Text('Log out'),
               ),
+              TextButton(
+                onPressed: () {
+                  AuthController.instance.delete();
+                },
+                child: const Text('Delete account'),
+              ),
             ],
           ),
         ),
