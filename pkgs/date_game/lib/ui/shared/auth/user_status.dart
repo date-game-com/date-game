@@ -36,7 +36,6 @@ class _UserDropDown extends StatelessWidget {
     final email = user.email ?? '?';
 
     return MenuAnchor(
-      //anchorTapClosesMenu: true,
       builder:
           (BuildContext context, MenuController controller, Widget? child) {
         return TextButton(
@@ -56,7 +55,7 @@ class _UserDropDown extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Signed in as $email'),
+              Text('Logged in as $email'),
               TextButton(
                 onPressed: () {
                   AuthController.instance.signOut();

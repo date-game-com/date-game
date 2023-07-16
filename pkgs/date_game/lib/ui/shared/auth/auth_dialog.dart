@@ -88,7 +88,7 @@ class _AuthScreenState extends State<AuthScreen> {
   String _screenTitle() {
     switch (_authScreen) {
       case _AuthScreen.signIn:
-        return 'Sign In';
+        return 'Log In';
       case _AuthScreen.createAccount:
         return 'Create Account';
       case _AuthScreen.forgotPassword:
@@ -115,13 +115,16 @@ class _AuthScreenState extends State<AuthScreen> {
     }
   }
 
-  static Widget _mayBeBuildError(BuildContext context, String? error) {
+  static Widget _errorOrSpace(BuildContext context, String? error) {
     if (error == null) {
-      return Container();
+      return const SizedBox(height: 8);
     }
-    return Text(
-      error,
-      style: TextStyle(color: Theme.of(context).colorScheme.error),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Text(
+        error,
+        style: TextStyle(color: Theme.of(context).colorScheme.error),
+      ),
     );
   }
 
@@ -200,7 +203,7 @@ class _AuthScreenState extends State<AuthScreen> {
           fieldName: 'Email',
           submit: submit,
         ),
-        _mayBeBuildError(context, _error),
+        _errorOrSpace(context, _error),
         if (_loading == true) const _AuthProgress('creating account...'),
         if (_loading == false)
           ElevatedButton(
@@ -209,7 +212,7 @@ class _AuthScreenState extends State<AuthScreen> {
           ),
         if (_loading == false)
           TextButton(
-            child: const Text('Have account? Sign in.'),
+            child: const Text('Have account? Log in.'),
             onPressed: () {
               _switchScreen(_AuthScreen.signIn, _emailController.text);
             },
@@ -258,12 +261,12 @@ class _AuthScreenState extends State<AuthScreen> {
           fieldName: 'Password',
           submit: submit,
         ),
-        _mayBeBuildError(context, _error),
+        _errorOrSpace(context, _error),
         if (_loading == true) const _AuthProgress('signing in...'),
         if (_loading == false)
           ElevatedButton(
             onPressed: submit,
-            child: const Text('Sign In'),
+            child: const Text('Log In'),
           ),
         if (_loading == false)
           TextButton(
@@ -293,7 +296,7 @@ class _AuthScreenState extends State<AuthScreen> {
           textAlign: TextAlign.center,
         ),
         ElevatedButton(
-          child: const Text('Sign In'),
+          child: const Text('Log in'),
           onPressed: () {
             _switchScreen(_AuthScreen.signIn, email);
           },
@@ -312,7 +315,7 @@ class _AuthScreenState extends State<AuthScreen> {
           textAlign: TextAlign.center,
         ),
         ElevatedButton(
-          child: const Text('Sign In'),
+          child: const Text('Log in'),
           onPressed: () {
             _switchScreen(_AuthScreen.signIn, email);
           },
@@ -351,17 +354,20 @@ class _AuthScreenState extends State<AuthScreen> {
           fieldName: 'Email',
           submit: submit,
         ),
-        _mayBeBuildError(context, _error),
+        _errorOrSpace(context, _error),
         if (_loading == true)
           const _AuthProgress('sending password reset link...'),
         if (_loading == false)
           ElevatedButton(
             onPressed: submit,
-            child: const Text('Send Password Reset Link'),
+            child: const Text(
+              'Send Password\nReset Link',
+              textAlign: TextAlign.center,
+            ),
           ),
         if (_loading == false)
           TextButton(
-            child: const Text('Sign In'),
+            child: const Text('Log in'),
             onPressed: () {
               _switchScreen(_AuthScreen.signIn, email);
             },
