@@ -6,46 +6,52 @@ import '../screens/landing_screen.dart';
 import '../shared/auth/auth_dialog.dart';
 import '../shared/auth/user_status.dart';
 
-class DateGamePage extends StatelessWidget {
+class DateGamePage extends StatefulWidget {
   const DateGamePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        centerTitle: false,
-        title: const Text('Date Game  (under construction)'),
-        actions: const [UserStatus()],
-      ),
-      body: const _DateGameBody(),
-    );
-  }
+  State<DateGamePage> createState() => _DateGamePageState();
 }
 
-class _DateGameBody extends StatefulWidget {
-  const _DateGameBody();
-
-  @override
-  State<_DateGameBody> createState() => _DateGameBodyState();
-}
-
-class _DateGameBodyState extends State<_DateGameBody> {
+class _DateGamePageState extends State<DateGamePage> {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: AuthController.instance.state,
       builder: (context, state, ___) {
-        switch (state) {
-          case AuthState.signedIn:
-            return const DashboardScreen();
-          case AuthState.signedOut:
-            return const LandingScreen();
-          case AuthState.wantToSignIn:
-          case AuthState.wantToSignUp:
-            return const AuthScreen();
-        }
+        bool hideAppBar =
+            {AuthState.wantToSignIn, AuthState.wantToSignUp}.contains(state);
+        return Scaffold(
+          appBar: hideAppBar
+              ? null
+              : AppBar(
+                  backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+                  centerTitle: false,
+                  title: const Text('Date Game  (under construction)'),
+                  actions: const [UserStatus()],
+                ),
+          body: _DateGameBody(state),
+        );
       },
     );
+  }
+}
+
+class _DateGameBody extends StatelessWidget {
+  const _DateGameBody(this.state);
+
+  final AuthState state;
+
+  @override
+  Widget build(BuildContext context) {
+    switch (state) {
+      case AuthState.signedIn:
+        return const DashboardScreen();
+      case AuthState.signedOut:
+        return const LandingScreen();
+      case AuthState.wantToSignIn:
+      case AuthState.wantToSignUp:
+        return const AuthScreen();
+    }
   }
 }
