@@ -8,6 +8,7 @@ enum AuthState {
   signedIn,
   wantToSignIn,
   wantToSignUp,
+  wantToDeleteAccount,
 }
 
 class AuthController {
@@ -36,15 +37,21 @@ class AuthController {
 
   bool get wantToSignIn => _wantToSignIn.value;
   final ValueNotifier<bool> _wantToSignIn = ValueNotifier(false);
+
   void requestSignIn() {
     assert(user.value == null);
     assert(state.value == AuthState.signedOut);
     _state.value = AuthState.wantToSignIn;
   }
 
+  void requestDeleteAccount() {
+    assert(user.value != null);
+    assert(state.value == AuthState.signedIn);
+    _state.value = AuthState.wantToDeleteAccount;
+  }
+
   void cancelSignIn() {
     assert(user.value == null);
-    assert(state.value == AuthState.wantToSignIn);
     _state.value = AuthState.signedOut;
   }
 
@@ -76,8 +83,20 @@ class AuthController {
     await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
   }
 
-  Future<void> delete() async {
+  Future<void> delete({required String password}) async {
+    final theUser = user.value;
+    assert(theUser != null);
+    if (theUser == null) return;
+
+    await theUser.reauthenticateWithCredential(
+      EmailAuthProvider.credential(
+        email: theUser.email!,
+        password: password,
+      ),
+    );
+    await theUser.delete();
+
     _user.value = null;
-    await user.value?.delete();
+    _state.value = AuthState.signedOut;
   }
 }

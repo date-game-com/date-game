@@ -52,6 +52,9 @@ class _DateGameBody extends StatelessWidget {
       case AuthState.wantToSignIn:
       case AuthState.wantToSignUp:
         return const AuthScreen();
+
+      case AuthState.wantToDeleteAccount:
+        throw UnimplementedError();
     }
   }
 }

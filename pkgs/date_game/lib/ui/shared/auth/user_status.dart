@@ -64,7 +64,7 @@ class _UserDropDown extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {
-                  AuthController.instance.delete();
+                  AuthController.instance.requestDeleteAccount();
                 },
                 child: const Text('Delete account'),
               ),
