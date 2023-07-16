@@ -43,7 +43,7 @@ class _DateGameBodyState extends State<_DateGameBody> {
             return const LandingScreen();
           case AuthState.wantToSignIn:
           case AuthState.wantToSignUp:
-            return AuthScreen(onCancel: () => setState(() {}));
+            return const AuthScreen();
         }
       },
     );

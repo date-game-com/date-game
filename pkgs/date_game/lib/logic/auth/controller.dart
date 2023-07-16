@@ -15,8 +15,8 @@ class AuthController {
 
   AuthController() {
     void handleUserChanged(User? newUser) {
-      user.value = newUser;
-      state.value = newUser == null ? AuthState.signedOut : AuthState.signedIn;
+      _user.value = newUser;
+      _state.value = newUser == null ? AuthState.signedOut : AuthState.signedIn;
     }
 
     FirebaseAuth.instance.authStateChanges().listen(handleUserChanged);
@@ -24,22 +24,24 @@ class AuthController {
     FirebaseAuth.instance.idTokenChanges().listen(handleUserChanged);
   }
 
-  final ValueNotifier<User?> user = ValueNotifier(null);
+  ValueListenable<User?> get user => _user;
+  final ValueNotifier<User?> _user = ValueNotifier(null);
 
-  final ValueNotifier<AuthState> state = ValueNotifier(AuthState.signedOut);
+  ValueListenable<AuthState> get state => _state;
+  final ValueNotifier<AuthState> _state = ValueNotifier(AuthState.signedOut);
 
   bool get wantToSignIn => _wantToSignIn.value;
   final ValueNotifier<bool> _wantToSignIn = ValueNotifier(false);
   void requestSignIn() {
     assert(user.value == null);
     assert(state.value == AuthState.signedOut);
-    state.value = AuthState.wantToSignIn;
+    _state.value = AuthState.wantToSignIn;
   }
 
   void cancelSignIn() {
     assert(user.value == null);
     assert(state.value == AuthState.wantToSignIn);
-    state.value = AuthState.signedOut;
+    _state.value = AuthState.signedOut;
   }
 
   Future<void> signIn({required String email, required String password}) async {
@@ -48,7 +50,7 @@ class AuthController {
   }
 
   Future<void> signOut() async {
-    user.value = null;
+    _user.value = null;
     await FirebaseAuth.instance.signOut();
   }
 
@@ -71,7 +73,7 @@ class AuthController {
   }
 
   Future<void> delete() async {
-    user.value = null;
+    _user.value = null;
     await user.value?.delete();
   }
 }

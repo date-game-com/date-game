@@ -7,10 +7,7 @@ import '../../../logic/auth/controller.dart';
 import '../../../logic/shared/exceptions.dart';
 
 class AuthScreen extends StatefulWidget {
-  final VoidCallback? onCancel;
-
   const AuthScreen({
-    this.onCancel,
     super.key,
   });
 
@@ -30,7 +27,6 @@ class _AuthScreenState extends State<AuthScreen> {
   _AuthScreen _authScreen = _AuthScreen.signIn;
   String? _error;
   String? _email;
-  //bool _onExitInvoked = false;
   bool _loading = false;
   FocusNode? _focusNodeCurrent;
   final FocusNode _emailNode = FocusNode();
@@ -54,14 +50,6 @@ class _AuthScreenState extends State<AuthScreen> {
       _email = email;
     });
   }
-
-  // void afterAuthorized(BuildContext context, FauiUser user) {
-  //   FauiAuthState.user = user;
-  //   if (!_onExitInvoked) {
-  //     _onExitInvoked = true;
-  //     widget.onExit();
-  //   }
-  // }
 
   @override
   void dispose() {
@@ -91,7 +79,7 @@ class _AuthScreenState extends State<AuthScreen> {
     return _AuthFrame(
       title: _screenTitle(),
       content: _getScreen(context),
-      onClose: widget.onCancel,
+      onClose: () => AuthController.instance.cancelSignIn(),
     );
   }
 
