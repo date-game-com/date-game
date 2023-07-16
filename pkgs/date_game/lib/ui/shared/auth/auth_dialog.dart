@@ -7,10 +7,10 @@ import '../../../logic/auth/controller.dart';
 import '../../../logic/shared/exceptions.dart';
 
 class AuthScreen extends StatefulWidget {
-  final VoidCallback? onExit;
+  final VoidCallback? onCancel;
 
   const AuthScreen({
-    this.onExit,
+    this.onCancel,
     super.key,
   });
 
@@ -91,7 +91,7 @@ class _AuthScreenState extends State<AuthScreen> {
     return _AuthFrame(
       title: _screenTitle(),
       content: _getScreen(context),
-      onClose: widget.onExit,
+      onClose: widget.onCancel,
     );
   }
 
