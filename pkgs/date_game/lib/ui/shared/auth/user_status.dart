@@ -10,7 +10,7 @@ class UserStatus extends StatelessWidget {
     return ValueListenableBuilder(
       valueListenable: AuthController.instance.user,
       builder: (context, user, child) {
-        final displayName = user?.displayName;
+        final displayName = user?.displayName ?? user?.email;
         if (displayName == null) {
           return TextButton(
             onPressed: () {
