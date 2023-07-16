@@ -82,7 +82,9 @@ For iOS and macos replace `com.example.dateGame` with 'com.dategame`
 
 ### Configure Firebase
 
-Follow https://firebase.google.com/docs/flutter/setup
+1. Follow https://firebase.google.com/docs/flutter/setup
+2. Run `firebase init hosting`
+
 
 ### Enable outgoing connections
 
