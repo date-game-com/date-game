@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../logic/auth/controller.dart';
+import '../../../logic/auth/controller.dart';
 
 class UserStatus extends StatelessWidget {
   const UserStatus({super.key});
@@ -12,7 +12,11 @@ class UserStatus extends StatelessWidget {
       builder: (context, user, child) {
         final displayName = user?.displayName;
         if (displayName == null) {
-          return TextButton(onPressed: () {}, child: const Text('Log in'));
+          return TextButton(
+              onPressed: () {
+                AuthController.instance.setWantToSignIn(true);
+              },
+              child: const Text('Log in'));
         } else {
           return Text(displayName);
         }

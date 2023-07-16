@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../logic/auth/controller.dart';
-import '../../logic/shared/exceptions.dart';
+import '../../../logic/auth/controller.dart';
+import '../../../logic/shared/exceptions.dart';
 
 class FauiAuthScreen extends StatefulWidget {
   final VoidCallback onExit;
