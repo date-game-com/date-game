@@ -57,7 +57,9 @@ class AuthController {
 
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: email, password: randomPassword());
+        email: email,
+        password: randomPassword(),
+      );
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (e) {
       if (e.code != FirebaseErrorCodes.emailAlreadyInUse.value) rethrow;
