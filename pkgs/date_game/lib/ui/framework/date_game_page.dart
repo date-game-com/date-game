@@ -16,9 +16,6 @@ class DateGamePage extends StatefulWidget {
 class _DateGamePageState extends State<DateGamePage> {
   @override
   Widget build(BuildContext context) {
-    print('values:');
-    print(AuthController.instance.state.value);
-    print(AuthController.instance.user.value);
     return ValueListenableBuilder(
       valueListenable: AuthController.instance.state,
       builder: (context, state, ___) {
