@@ -11,13 +11,6 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   testWidgets('Smoke test', (WidgetTester tester) async {
     await tester.pumpWidget(const App(fakeFirebase: true));
-    print(1);
-    await tester.pump(Duration(seconds: 10));
-    print(2);
-    await tester.pump();
-
-    await tester.pump();
-    await tester.pump();
     await tester.pump();
 
     await expectLater(
@@ -25,8 +18,7 @@ void main() {
       matchesGoldenFile('goldens/landing_fake_firebase.png'),
     );
 
-    print(3);
-    // expect(find.textContaining('Date Game'), findsAtLeastNWidgets(1));
-    // expect(find.text('Log in'), findsOneWidget);
+    expect(find.textContaining('Date Game'), findsAtLeastNWidgets(1));
+    expect(find.text('Log in'), findsOneWidget);
   });
 }

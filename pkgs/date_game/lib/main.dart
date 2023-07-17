@@ -13,7 +13,7 @@ Future<void> main(List<String> args) async {
 class App extends StatefulWidget {
   const App({super.key, this.fakeFirebase = false});
 
-  final fakeFirebase;
+  final bool fakeFirebase;
 
   @override
   State<App> createState() => _AppState();
@@ -25,27 +25,24 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
+    if (widget.fakeFirebase) checkFakingIsOk();
 
-    WidgetsFlutterBinding.ensureInitialized();
-
-    _initFirebase(fake: widget.fakeFirebase).then((_) {
+    _initFirebase().then((_) {
       _initControllers();
       setState(() => _initialized = true);
     });
   }
 
-  Future<void> _initFirebase({required bool fake}) async {
-    if (fake) {
-      checkFakingIsOk();
-      return;
-    }
+  Future<void> _initFirebase() async {
+    if (widget.fakeFirebase) return;
+
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
   }
 
   void _initControllers() {
-    AuthController().initialize();
+    AuthController.initialize(fake: widget.fakeFirebase);
   }
 
   @override

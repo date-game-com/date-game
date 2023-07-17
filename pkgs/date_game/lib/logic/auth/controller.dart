@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
 import '../shared/exceptions.dart';
+import '../shared/primitives/utils.dart';
 
 enum AuthState {
   signedOut,
@@ -14,11 +15,16 @@ enum AuthState {
 class AuthController {
   static late final AuthController instance;
 
-  void initialize() {
-    instance = AuthController();
+  static void initialize({bool fake = false}) {
+    instance = AuthController(fake: fake);
   }
 
-  AuthController() {
+  AuthController({bool fake = false}) {
+    if (fake) {
+      checkFakingIsOk();
+      return;
+    }
+
     void handleUserChanged(User? newUser) {
       _user.value = newUser;
       _state.value = newUser == null ? AuthState.signedOut : AuthState.signedIn;
