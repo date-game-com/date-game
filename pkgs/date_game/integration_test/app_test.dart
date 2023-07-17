@@ -14,6 +14,7 @@ import 'package:integration_test/integration_test.dart';
 
 // Run headless:
 // flutter test integration_test/app_test.dart -d flutter-tester
+// TODO: https://github.com/date-game-com/date-game/pull/2
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
