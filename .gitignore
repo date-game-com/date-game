@@ -45,5 +45,6 @@ migrate_working_dir/
 
 # Manually added
 **/pubspec.lock
-app/macos/Flutter/Flutter-Debug.xcconfig
-pkgs/date_game/macos/Podfile.lock
+pkgs/**/macos/Flutter/Flutter-Debug.xcconfig
+pkgs/**/macos/Podfile.lock
+pkgs/**/test/failures/**

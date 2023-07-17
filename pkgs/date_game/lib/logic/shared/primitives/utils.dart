@@ -8,3 +8,16 @@ void debugPrint(String message) {
     return true;
   }());
 }
+
+void checkFakingIsOk() {
+  bool isRelease = true;
+  assert(() {
+    if (!kReleaseMode) {
+      isRelease = false;
+    }
+    return true;
+  }());
+  if (isRelease) {
+    throw StateError('Faking is not allowed in release mode.');
+  }
+}

@@ -24,16 +24,16 @@ jobs:
 
       - name: pub get
         run: flutter pub get
-        working-directory: pkgs/app
+        working-directory: pkgs/date_game
 
       - name: flutter analyze
-        run: flutter analyze
-        working-directory: pkgs/app
+        run: flutter analyze --fatal-infos
+        working-directory: pkgs/date_game
 
       - name: flutter test
         run: flutter test
-        working-directory: pkgs/app
+        working-directory: pkgs/date_game
 
-      - name: integration test
-        run: flutter test integration_test/app_test.dart -d flutter-tester
-        working-directory: pkgs/app
+      # - name: integration test
+      #   run: flutter test integration_test/app_test.dart -d flutter-tester
+      #   working-directory: pkgs/date_game

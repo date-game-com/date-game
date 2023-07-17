@@ -5,9 +5,12 @@ import '../screens/dashboard_screen.dart';
 import '../screens/landing_screen.dart';
 import '../shared/auth/auth_dialog.dart';
 import '../shared/auth/user_status.dart';
+import '../shared/primitives/simple_items.dart';
 
 class DateGamePage extends StatefulWidget {
-  const DateGamePage({super.key});
+  const DateGamePage({super.key, required this.initialized});
+
+  final bool initialized;
 
   @override
   State<DateGamePage> createState() => _DateGamePageState();
@@ -16,6 +19,14 @@ class DateGamePage extends StatefulWidget {
 class _DateGamePageState extends State<DateGamePage> {
   @override
   Widget build(BuildContext context) {
+    if (!widget.initialized) {
+      return const Scaffold(
+        body: Center(
+          child: Progress(),
+        ),
+      );
+    }
+
     return ValueListenableBuilder(
       valueListenable: AuthController.instance.state,
       builder: (context, state, ___) {
