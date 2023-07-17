@@ -19,6 +19,7 @@ class DefaultFirebaseOptions {
     if (kIsWeb) {
       return web;
     }
+    print('!!!! defaultTargetPlatform: $defaultTargetPlatform');
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
@@ -67,7 +68,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '170500034711',
     projectId: 'date-game-com',
     storageBucket: 'date-game-com.appspot.com',
-    iosClientId: '170500034711-b9osip54ken4l62pe2a03gkqi0gsutcp.apps.googleusercontent.com',
+    iosClientId:
+        '170500034711-b9osip54ken4l62pe2a03gkqi0gsutcp.apps.googleusercontent.com',
     iosBundleId: 'com.dategame',
   );
 
@@ -77,7 +79,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '170500034711',
     projectId: 'date-game-com',
     storageBucket: 'date-game-com.appspot.com',
-    iosClientId: '170500034711-asfb9kh4b1vo4mm5nsskl46tis38c8ek.apps.googleusercontent.com',
+    iosClientId:
+        '170500034711-asfb9kh4b1vo4mm5nsskl46tis38c8ek.apps.googleusercontent.com',
     iosBundleId: 'com.dategame.RunnerTests',
   );
 }
