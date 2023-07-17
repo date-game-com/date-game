@@ -46,7 +46,8 @@ class _AuthDialogState extends State<AuthDialog> {
         break;
       default:
         throw StateError(
-            'Unexpected value: ${AuthController.instance.state.value}');
+          'Unexpected value: ${AuthController.instance.state.value}',
+        );
     }
   }
 
