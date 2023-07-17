@@ -8,6 +8,8 @@
 import 'package:date_game/main.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'test_infra/simple_items.dart';
+
 void main() {
   testWidgets('Smoke test', (WidgetTester tester) async {
     await tester.pumpWidget(const App(fakeFirebase: true));
@@ -15,7 +17,7 @@ void main() {
 
     await expectLater(
       find.byType(App),
-      matchesGoldenFile('goldens/landing_fake_firebase.png'),
+      checkGolden('landing_fake_firebase.png'),
     );
 
     expect(find.textContaining('Date Game'), findsAtLeastNWidgets(1));
