@@ -5,52 +5,32 @@ import '../../../logic/auth/controller.dart';
 import '../../../logic/shared/exceptions.dart';
 import '../primitives/dialog_frame.dart';
 
-class AuthDialog extends StatefulWidget {
-  const AuthDialog({
+class DeleteAccountDialog extends StatefulWidget {
+  const DeleteAccountDialog({
     super.key,
   });
 
   @override
-  State<AuthDialog> createState() => _AuthDialogState();
+  State<DeleteAccountDialog> createState() => _DeleteAccountDialogState();
 }
 
-enum _AuthDialog {
-  signIn,
-  createAccount,
-  forgotPassword,
-  verifyEmail,
-  resetPassword,
-}
-
-class _AuthDialogState extends State<AuthDialog> {
-  late _AuthDialog _authScreen;
+class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
   String? _error;
-  String? _email;
   bool _loading = false;
-  FocusNode? _focusNodeCurrent;
-  final FocusNode _emailNode = FocusNode();
-  final FocusNode _passwordNode = FocusNode();
-  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordcontroller = TextEditingController();
 
   @override
   void initState() {
     super.initState();
 
-    switch (AuthController.instance.state.value) {
-      case AuthState.wantToSignIn:
-        _authScreen = _AuthDialog.createAccount;
-        break;
-      case AuthState.wantToSignUp:
-        _authScreen = _AuthDialog.signIn;
-        break;
-      default:
-        throw StateError(
-            'Unexpected value: ${AuthController.instance.state.value}');
+    // {AuthState.wantToSignIn, AuthState.wantToSignUp}.contains(state)
+
+    if (AuthController.instance.state.value == AuthState.wantToSignUp) {
+      _authScreen = _ReauthDialog.createAccount;
     }
   }
 
-  void _switchScreen(_AuthDialog authScreen, String email) {
+  void _switchScreen(_ReauthDialog authScreen, String email) {
     setState(() {
       _authScreen = authScreen;
       _error = null;
@@ -92,30 +72,30 @@ class _AuthDialogState extends State<AuthDialog> {
 
   String _screenTitle() {
     switch (_authScreen) {
-      case _AuthDialog.signIn:
+      case _ReauthDialog.signIn:
         return 'Log In';
-      case _AuthDialog.createAccount:
+      case _ReauthDialog.createAccount:
         return 'Create Account';
-      case _AuthDialog.forgotPassword:
+      case _ReauthDialog.forgotPassword:
         return 'Forgot Password';
-      case _AuthDialog.verifyEmail:
+      case _ReauthDialog.verifyEmail:
         return 'Verify Email';
-      case _AuthDialog.resetPassword:
+      case _ReauthDialog.resetPassword:
         return 'Reset Password';
     }
   }
 
   Widget _getScreen(BuildContext context) {
     switch (_authScreen) {
-      case _AuthDialog.signIn:
+      case _ReauthDialog.signIn:
         return _buildSignInScreen(context);
-      case _AuthDialog.createAccount:
+      case _ReauthDialog.createAccount:
         return _buildCreateAccountScreen(context);
-      case _AuthDialog.forgotPassword:
+      case _ReauthDialog.forgotPassword:
         return _buildForgotPasswordScreen(context, _email!);
-      case _AuthDialog.verifyEmail:
+      case _ReauthDialog.verifyEmail:
         return _buildVerifyEmailScreen(context, _email!);
-      case _AuthDialog.resetPassword:
+      case _ReauthDialog.resetPassword:
         return _buildResetPasswordScreen(context, _email!);
     }
   }
@@ -188,7 +168,7 @@ class _AuthDialogState extends State<AuthDialog> {
           _loading = false;
         });
 
-        _switchScreen(_AuthDialog.verifyEmail, _emailController.text);
+        _switchScreen(_ReauthDialog.verifyEmail, _emailController.text);
       } catch (e) {
         setState(() {
           _error = exceptionToUiMessage(e);
@@ -219,7 +199,7 @@ class _AuthDialogState extends State<AuthDialog> {
           TextButton(
             child: const Text('Have account? Log in.'),
             onPressed: () {
-              _switchScreen(_AuthDialog.signIn, _emailController.text);
+              _switchScreen(_ReauthDialog.signIn, _emailController.text);
             },
           ),
       ],
@@ -277,14 +257,15 @@ class _AuthDialogState extends State<AuthDialog> {
           TextButton(
             child: const Text('Create Account'),
             onPressed: () {
-              _switchScreen(_AuthDialog.createAccount, _emailController.text);
+              _switchScreen(_ReauthDialog.createAccount, _emailController.text);
             },
           ),
         if (_loading == false)
           TextButton(
             child: const Text('Forgot Password?'),
             onPressed: () {
-              _switchScreen(_AuthDialog.forgotPassword, _emailController.text);
+              _switchScreen(
+                  _ReauthDialog.forgotPassword, _emailController.text);
             },
           ),
       ],
@@ -303,7 +284,7 @@ class _AuthDialogState extends State<AuthDialog> {
         ElevatedButton(
           child: const Text('Log in'),
           onPressed: () {
-            _switchScreen(_AuthDialog.signIn, email);
+            _switchScreen(_ReauthDialog.signIn, email);
           },
         ),
       ],
@@ -322,7 +303,7 @@ class _AuthDialogState extends State<AuthDialog> {
         ElevatedButton(
           child: const Text('Log in'),
           onPressed: () {
-            _switchScreen(_AuthDialog.signIn, email);
+            _switchScreen(_ReauthDialog.signIn, email);
           },
         ),
       ],
@@ -339,7 +320,7 @@ class _AuthDialogState extends State<AuthDialog> {
         setState(() {
           _loading = false;
         });
-        _switchScreen(_AuthDialog.resetPassword, _emailController.text);
+        _switchScreen(_ReauthDialog.resetPassword, _emailController.text);
       } catch (e) {
         setState(() {
           _error = exceptionToUiMessage(e);
@@ -374,14 +355,14 @@ class _AuthDialogState extends State<AuthDialog> {
           TextButton(
             child: const Text('Log in'),
             onPressed: () {
-              _switchScreen(_AuthDialog.signIn, email);
+              _switchScreen(_ReauthDialog.signIn, email);
             },
           ),
         if (_loading == false)
           TextButton(
             child: const Text('Create Account'),
             onPressed: () {
-              _switchScreen(_AuthDialog.createAccount, email);
+              _switchScreen(_ReauthDialog.createAccount, email);
             },
           ),
       ],

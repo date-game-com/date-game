@@ -51,7 +51,7 @@ class _DateGameBody extends StatelessWidget {
         return const LandingScreen();
       case AuthState.wantToSignIn:
       case AuthState.wantToSignUp:
-        return const AuthScreen();
+        return const AuthDialog();
 
       case AuthState.wantToDeleteAccount:
         throw UnimplementedError();
