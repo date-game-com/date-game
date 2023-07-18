@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -5,6 +7,27 @@ import 'firebase_options.dart';
 import 'logic/auth/controller.dart';
 import 'logic/shared/primitives/utils.dart';
 import 'ui/framework/date_game_page.dart';
+
+Completer? _initialized;
+
+Future<void> initializeApp({bool fakeFirebase = false}) async {
+  if (_initialized != null) return _initialized!.future;
+  _initialized = Completer();
+
+  if (fakeFirebase) checkFakingIsOk();
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  if (!fakeFirebase) {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  }
+
+  AuthController.initialize(fake: fakeFirebase);
+
+  _initialized!.complete();
+}
 
 Future<void> main(List<String> args) async {
   runApp(const App());
@@ -20,29 +43,10 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  bool _initialized = false;
-
   @override
   void initState() {
     super.initState();
-    if (widget.fakeFirebase) checkFakingIsOk();
-
-    _initFirebase().then((_) {
-      _initControllers();
-      setState(() => _initialized = true);
-    });
-  }
-
-  Future<void> _initFirebase() async {
-    if (widget.fakeFirebase) return;
-
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-  }
-
-  void _initControllers() {
-    AuthController.initialize(fake: widget.fakeFirebase);
+    unawaited(initializeApp(fakeFirebase: widget.fakeFirebase));
   }
 
   @override
@@ -53,7 +57,7 @@ class _AppState extends State<App> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: DateGamePage(initialized: _initialized),
+      home: DateGamePage(initialized: _initialized!.isCompleted),
       debugShowCheckedModeBanner: false,
     );
   }
