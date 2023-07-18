@@ -8,6 +8,6 @@ void main() {
   });
 
   test('create', () async {
-    await createDoc('test', {'a': 1});
+    await createDoc(collection: 'test', json: {'a': 1});
   });
 }
