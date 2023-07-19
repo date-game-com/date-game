@@ -1,6 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
-
-import '../primitives/utils.dart';
+import 'package:flutter/foundation.dart';
 
 bool _initialized = false;
 

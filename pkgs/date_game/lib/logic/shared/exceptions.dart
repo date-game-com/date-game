@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-
-import 'primitives/utils.dart';
+import 'package:flutter/foundation.dart';
 
 /// Some possible values of [FirebaseAuthException.code].
 enum FirebaseErrorCodes {

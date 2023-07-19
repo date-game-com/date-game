@@ -11,22 +11,26 @@ import 'ui/framework/date_game_page.dart';
 Completer? _initialized;
 
 Future<void> initializeApp({bool fakeFirebase = false}) async {
-  if (_initialized != null) return _initialized!.future;
-  _initialized = Completer();
+  try {
+    if (_initialized != null) return _initialized!.future;
+    _initialized = Completer();
 
-  if (fakeFirebase) checkFakingIsOk();
+    if (fakeFirebase) checkFakingIsOk();
 
-  WidgetsFlutterBinding.ensureInitialized();
+    WidgetsFlutterBinding.ensureInitialized();
 
-  if (!fakeFirebase) {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+    if (!fakeFirebase) {
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+    }
+
+    AuthController.initialize(fake: fakeFirebase);
+
+    _initialized!.complete();
+  } catch (e) {
+    debugPrint('Error initializing app: $e');
   }
-
-  AuthController.initialize(fake: fakeFirebase);
-
-  _initialized!.complete();
 }
 
 Future<void> main(List<String> args) async {
@@ -46,7 +50,11 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
-    unawaited(initializeApp(fakeFirebase: widget.fakeFirebase));
+    unawaited(
+      initializeApp(fakeFirebase: widget.fakeFirebase).then((_) {
+        setState(() {});
+      }),
+    );
   }
 
   @override

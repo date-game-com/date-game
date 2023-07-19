@@ -39,10 +39,10 @@ class _AuthDialogState extends State<AuthDialog> {
 
     switch (AuthController.instance.state.value) {
       case AuthState.wantToSignIn:
-        _authScreen = _AuthDialog.createAccount;
+        _authScreen = _AuthDialog.signIn;
         break;
       case AuthState.wantToSignUp:
-        _authScreen = _AuthDialog.signIn;
+        _authScreen = _AuthDialog.createAccount;
         break;
       default:
         throw StateError(
