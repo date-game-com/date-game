@@ -20,8 +20,6 @@ class DefaultFirebaseOptions {
       return web;
     }
 
-    print('defaultTargetPlatform: $defaultTargetPlatform');
-
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
