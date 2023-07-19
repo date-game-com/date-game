@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../logic/auth/controller.dart';
+import '../../../logic/shared/auth/controller.dart';
 import '../../../logic/shared/exceptions.dart';
 import '../primitives/dialog_frame.dart';
 

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../../../logic/auth/controller.dart';
+import '../../../logic/shared/auth/controller.dart';
 
 class UserStatus extends StatelessWidget {
   const UserStatus({super.key});

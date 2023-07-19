@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
-import '../shared/exceptions.dart';
-import '../shared/primitives/utils.dart';
+import '../exceptions.dart';
+import '../primitives/utils.dart';
 
 enum AuthState {
   signedOut,

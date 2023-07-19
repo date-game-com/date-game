@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../logic/auth/controller.dart';
+import '../../logic/shared/auth/controller.dart';
 import '../screens/dashboard_screen.dart';
 import '../screens/landing_screen.dart';
 import '../shared/auth/auth_dialog.dart';
