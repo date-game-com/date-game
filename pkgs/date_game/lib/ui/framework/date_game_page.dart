@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../logic/shared/auth/controller.dart';
+import '../screens/alias_screen.dart';
 import '../screens/dashboard_screen.dart';
 import '../screens/landing_screen.dart';
 import '../shared/auth/auth_dialog.dart';
@@ -57,7 +58,8 @@ class _DateGameBody extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (state) {
       case AuthState.signedIn:
-        return const DashboardScreen();
+        return const SetAliasScreen();
+      //return const DashboardScreen();
       case AuthState.signedOut:
         return const LandingScreen();
       case AuthState.wantToSignIn:
