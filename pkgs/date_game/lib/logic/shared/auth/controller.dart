@@ -15,17 +15,14 @@ enum AuthState {
 
 class Person {
   final String alias;
-  final String owner;
 
   const Person({
-    required this.owner,
     required this.alias,
   });
 }
 
 enum _Json {
   alias,
-  owner,
 }
 
 class AuthController {
@@ -107,7 +104,6 @@ class AuthController {
   Future<void> createAlias(String alias) async {
     final json = {
       _Json.alias.name: alias,
-      _Json.owner.name: user.value!.uid,
     };
     await createDoc(
       collection: Collections.person,
