@@ -95,6 +95,6 @@ Lookup `com.apple.security.app-sandbox` and set to false.
 Commands that may help:
 
 ```
-open ios/Runner.xcworkspace
+cd macos
 sudo gem install cocoapods && pod install
 ```
