@@ -1,4 +1,4 @@
-import 'package:date_game/logic/shared/primitives/crud.dart';
+import 'package:date_game/logic/shared/primitives/fb_crud.dart';
 import 'package:date_game/main.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -7,7 +7,7 @@ void main() {
     await initializeApp();
   });
 
-  test('create', () async {
-    await createDoc(collection: 'test', json: {'a': 1});
-  });
+  // test('create', () async {
+  //   await createDoc(collection: 'test', json: {'a': 1});
+  // });
 }

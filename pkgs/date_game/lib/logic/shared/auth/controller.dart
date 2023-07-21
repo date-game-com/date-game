@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
 import '../exceptions.dart';
+import '../primitives/fb_crud.dart';
 import '../primitives/utils.dart';
 
 enum AuthState {
@@ -10,6 +11,21 @@ enum AuthState {
   wantToSignIn,
   wantToSignUp,
   wantToDeleteAccount,
+}
+
+class Person {
+  final String alias;
+  final String id;
+
+  const Person({
+    required this.id,
+    required this.alias,
+  });
+}
+
+enum _Json {
+  alias,
+  id,
 }
 
 class AuthController {
@@ -40,6 +56,9 @@ class AuthController {
 
   ValueListenable<AuthState> get state => _state;
   final ValueNotifier<AuthState> _state = ValueNotifier(AuthState.signedOut);
+
+  ValueListenable<Person?> get person => _person;
+  final ValueNotifier<Person?> _person = ValueNotifier(null);
 
   bool get wantToSignIn => _wantToSignIn.value;
   final ValueNotifier<bool> _wantToSignIn = ValueNotifier(false);
@@ -83,6 +102,16 @@ class AuthController {
     } on FirebaseAuthException catch (e) {
       if (e.code != FirebaseErrorCodes.emailAlreadyInUse.value) rethrow;
     }
+  }
+
+  Future<void> createAlias(String alias) async {
+    await createDoc(
+      collection: Collections.person,
+      json: {
+        _Json.alias.name: alias,
+        _Json.id.name: user.value!.uid,
+      },
+    );
   }
 
   Future<void> resetPassword(String email) async {

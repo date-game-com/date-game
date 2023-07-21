@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../logic/shared/primitives/crud.dart';
+import '../../logic/shared/auth/controller.dart';
 
 class SetAliasScreen extends StatefulWidget {
   const SetAliasScreen({super.key});
@@ -21,10 +21,7 @@ class _SetAliasScreenState extends State<SetAliasScreen> {
         ),
         TextButton(
           onPressed: () async {
-            await createDoc(
-              collection: 'Person',
-              json: {'alias': _aliasController.text},
-            );
+            await AuthController.instance.createAlias(_aliasController.text);
           },
           child: const Text('Save'),
         ),
