@@ -15,5 +15,12 @@ Future<void> createDoc({
   required Collections collection,
   required Map<String, dynamic> json,
 }) async {
-  await _firestore.collection(collection.name).add(json);
+  try {
+    await _firestore.collection(collection.name).add(json);
+  } on FirebaseException catch (e) {
+    print('FirebaseException');
+    print(e);
+  } catch (e) {
+    print(e);
+  }
 }
