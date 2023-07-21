@@ -109,9 +109,9 @@ class AuthController {
       _Json.alias.name: alias,
       _Json.owner.name: user.value!.uid,
     };
-    print(json);
     await createDoc(
       collection: Collections.person,
+      path: user.value!.uid,
       json: json,
     );
   }

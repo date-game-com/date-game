@@ -13,14 +13,17 @@ enum Collections {
 
 Future<void> createDoc({
   required Collections collection,
+  required String path,
   required Map<String, dynamic> json,
 }) async {
-  try {
-    await _firestore.collection(collection.name).add(json);
-  } on FirebaseException catch (e) {
-    print('FirebaseException');
-    print(e);
-  } catch (e) {
-    print(e);
-  }
+  await _firestore.collection(collection.name).doc(path).set(json);
+}
+
+Future<Map<String, dynamic>> queryDoc({
+  required Collections collection,
+  required String path,
+}) async {
+  return (await _firestore.collection(collection.name).doc(path).get())
+          .data() ??
+      {};
 }
