@@ -4,7 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'firebase_options.dart';
-import 'logic/shared/auth/controller.dart';
+import 'logic/shared/auth_state.dart';
 import 'logic/shared/primitives/utils.dart';
 import 'ui/framework/date_game_page.dart';
 
@@ -25,7 +25,7 @@ Future<void> initializeApp({bool fakeFirebase = false}) async {
       );
     }
 
-    AuthController.initialize(fake: fakeFirebase);
+    AuthState.initialize(fake: fakeFirebase);
 
     _initialized!.complete();
   } catch (e) {

@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../../../logic/shared/auth/controller.dart';
+import '../../../logic/features/auth.dart';
+import '../../../logic/shared/auth_state.dart';
 
 class UserStatus extends StatelessWidget {
   const UserStatus({super.key});
@@ -9,12 +10,12 @@ class UserStatus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: AuthController.instance.user,
+      valueListenable: AuthState.instance.user,
       builder: (context, user, child) {
         if (user == null) {
           return TextButton(
             onPressed: () {
-              AuthController.instance.requestSignIn();
+              AuthState.instance.requestSignIn();
             },
             child: const Text('Log in'),
           );
@@ -58,13 +59,13 @@ class _UserDropDown extends StatelessWidget {
               Text('Logged in as $email'),
               TextButton(
                 onPressed: () {
-                  AuthController.instance.signOut();
+                  AuthController().signOut();
                 },
                 child: const Text('Log out'),
               ),
               TextButton(
                 onPressed: () {
-                  AuthController.instance.requestDeleteAccount();
+                  AuthState.instance.requestDeleteAccount();
                 },
                 child: const Text('Delete account'),
               ),

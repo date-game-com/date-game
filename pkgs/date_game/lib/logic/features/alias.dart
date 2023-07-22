@@ -1,4 +1,4 @@
-import '../shared/auth/controller.dart';
+import '../shared/auth_state.dart';
 import '../shared/exceptions.dart';
 import '../shared/primitives/docs.dart';
 import '../shared/primitives/fb_crud.dart';
@@ -33,9 +33,9 @@ class AliasController {
     );
     await setDoc(
       collection: Collections.person,
-      id: AuthController.instance.user.value!.uid,
+      id: AuthState.instance.user.value!.uid,
       json: Person(alias: alias).toJson(),
     );
-    AuthController.instance.setAlias(alias);
+    AuthState.instance.setAlias(alias);
   }
 }

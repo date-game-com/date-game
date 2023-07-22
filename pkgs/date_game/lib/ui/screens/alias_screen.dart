@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../logic/features/alias.dart';
-import '../../logic/shared/auth/controller.dart';
+import '../../logic/shared/auth_state.dart';
 
 class SetAliasScreen extends StatefulWidget {
   const SetAliasScreen({super.key});

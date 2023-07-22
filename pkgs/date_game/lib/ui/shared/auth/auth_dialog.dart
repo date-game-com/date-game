@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../logic/shared/auth/controller.dart';
+import '../../../logic/features/auth.dart';
+import '../../../logic/shared/auth_state.dart';
 import '../../../logic/shared/exceptions.dart';
 import '../primitives/dialog_frame.dart';
 
@@ -37,7 +38,7 @@ class _AuthDialogState extends State<AuthDialog> {
   void initState() {
     super.initState();
 
-    switch (AuthController.instance.state.value) {
+    switch (AuthState.instance.state.value) {
       case AuthStates.wantToSignIn:
         _authScreen = _AuthDialog.signIn;
         break;
@@ -46,7 +47,7 @@ class _AuthDialogState extends State<AuthDialog> {
         break;
       default:
         throw StateError(
-          'Unexpected value: ${AuthController.instance.state.value}',
+          'Unexpected value: ${AuthState.instance.state.value}',
         );
     }
   }
@@ -87,7 +88,7 @@ class _AuthDialogState extends State<AuthDialog> {
     return DialogFrame(
       title: _screenTitle(),
       content: _getScreen(context),
-      onClose: () => AuthController.instance.cancelSignIn(),
+      onClose: () => AuthState.instance.cancelSignIn(),
     );
   }
 
@@ -184,7 +185,7 @@ class _AuthDialogState extends State<AuthDialog> {
         setState(() {
           _loading = true;
         });
-        await AuthController.instance.signUp(_emailController.text);
+        await AuthController().signUp(_emailController.text);
         setState(() {
           _loading = false;
         });
@@ -233,7 +234,7 @@ class _AuthDialogState extends State<AuthDialog> {
         setState(() {
           _loading = true;
         });
-        await AuthController.instance.signIn(
+        await AuthController().signIn(
           email: _emailController.text,
           password: _passwordcontroller.text,
         );
@@ -336,7 +337,7 @@ class _AuthDialogState extends State<AuthDialog> {
         setState(() {
           _loading = true;
         });
-        await AuthController.instance.resetPassword(_emailController.text);
+        await AuthController().resetPassword(_emailController.text);
         setState(() {
           _loading = false;
         });

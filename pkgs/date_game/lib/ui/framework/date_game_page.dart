@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../logic/shared/auth/controller.dart';
+import '../../logic/shared/auth_state.dart';
 import '../screens/alias_screen.dart';
 import '../screens/landing_screen.dart';
 import '../shared/auth/auth_dialog.dart';
@@ -28,7 +28,7 @@ class _DateGamePageState extends State<DateGamePage> {
     }
 
     return ValueListenableBuilder(
-      valueListenable: AuthController.instance.state,
+      valueListenable: AuthState.instance.state,
       builder: (context, state, ___) {
         bool hideAppBar =
             {AuthStates.wantToSignIn, AuthStates.wantToSignUp}.contains(state);
