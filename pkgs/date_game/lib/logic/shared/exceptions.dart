@@ -16,7 +16,17 @@ String exceptionToUiMessage(Object? exception) {
     return exception.message ?? 'Unexpected firebase error';
   }
 
+  if (exception is UiMessageException) {
+    return exception.message;
+  }
+
   debugPrint('Unexpected error of type ${exception.runtimeType}: $exception');
 
   return 'Unexpected error. Check console for details.';
+}
+
+/// Exception that showld be shown to the user.
+class UiMessageException implements Exception {
+  String message;
+  UiMessageException(this.message);
 }

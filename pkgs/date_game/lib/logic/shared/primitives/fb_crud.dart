@@ -4,6 +4,7 @@ final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 enum Collections {
   person('Person'),
+  alias('Alias'),
   ;
 
   final String name;
@@ -11,19 +12,18 @@ enum Collections {
   const Collections(this.name);
 }
 
-Future<void> createDoc({
+Future<void> setDoc({
   required Collections collection,
-  required String path,
+  required String id,
   required Map<String, dynamic> json,
 }) async {
-  await _firestore.collection(collection.name).doc(path).set(json);
+  await _firestore.collection(collection.name).doc(id).set(json);
 }
 
-Future<Map<String, dynamic>> queryDoc({
+Future<Map<String, dynamic>?> queryDoc({
   required Collections collection,
-  required String path,
+  required String id,
 }) async {
-  return (await _firestore.collection(collection.name).doc(path).get())
-          .data() ??
+  return (await _firestore.collection(collection.name).doc(id).get()).data() ??
       {};
 }

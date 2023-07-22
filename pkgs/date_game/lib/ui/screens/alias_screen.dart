@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../logic/features/alias.dart';
 import '../../logic/shared/auth/controller.dart';
 
 class SetAliasScreen extends StatefulWidget {
@@ -21,7 +22,7 @@ class _SetAliasScreenState extends State<SetAliasScreen> {
         ),
         TextButton(
           onPressed: () async {
-            await AuthController.instance.createAlias(_aliasController.text);
+            await AliasController().createAlias(_aliasController.text);
           },
           child: const Text('Save'),
         ),

@@ -2,27 +2,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
 import '../exceptions.dart';
-import '../primitives/fb_crud.dart';
 import '../primitives/utils.dart';
 
-enum AuthState {
+enum AuthStates {
   signedOut,
   signedIn,
   wantToSignIn,
   wantToSignUp,
   wantToDeleteAccount,
-}
-
-class Person {
-  final String alias;
-
-  const Person({
-    required this.alias,
-  });
-}
-
-enum _Json {
-  alias,
 }
 
 class AuthController {
@@ -40,7 +27,8 @@ class AuthController {
 
     void handleUserChanged(User? newUser) {
       _user.value = newUser;
-      _state.value = newUser == null ? AuthState.signedOut : AuthState.signedIn;
+      _state.value =
+          newUser == null ? AuthStates.signedOut : AuthStates.signedIn;
     }
 
     FirebaseAuth.instance.authStateChanges().listen(handleUserChanged);
@@ -51,30 +39,28 @@ class AuthController {
   ValueListenable<User?> get user => _user;
   final ValueNotifier<User?> _user = ValueNotifier(null);
 
-  ValueListenable<AuthState> get state => _state;
-  final ValueNotifier<AuthState> _state = ValueNotifier(AuthState.signedOut);
+  ValueListenable<AuthStates> get state => _state;
+  final ValueNotifier<AuthStates> _state = ValueNotifier(AuthStates.signedOut);
 
-  ValueListenable<Person?> get person => _person;
-  final ValueNotifier<Person?> _person = ValueNotifier(null);
-
-  bool get wantToSignIn => _wantToSignIn.value;
-  final ValueNotifier<bool> _wantToSignIn = ValueNotifier(false);
+  ValueListenable<String?> get alias => _alias;
+  final ValueNotifier<String?> _alias = ValueNotifier(null);
+  void setAlias(String alias) => _alias.value = alias;
 
   void requestSignIn() {
     assert(user.value == null);
-    assert(state.value == AuthState.signedOut);
-    _state.value = AuthState.wantToSignIn;
+    assert(state.value == AuthStates.signedOut);
+    _state.value = AuthStates.wantToSignIn;
   }
 
   void requestDeleteAccount() {
     assert(user.value != null);
-    assert(state.value == AuthState.signedIn);
-    _state.value = AuthState.wantToDeleteAccount;
+    assert(state.value == AuthStates.signedIn);
+    _state.value = AuthStates.wantToDeleteAccount;
   }
 
   void cancelSignIn() {
     assert(user.value == null);
-    _state.value = AuthState.signedOut;
+    _state.value = AuthStates.signedOut;
   }
 
   Future<void> signIn({required String email, required String password}) async {
@@ -101,17 +87,6 @@ class AuthController {
     }
   }
 
-  Future<void> createAlias(String alias) async {
-    final json = {
-      _Json.alias.name: alias,
-    };
-    await createDoc(
-      collection: Collections.person,
-      path: user.value!.uid,
-      json: json,
-    );
-  }
-
   Future<void> resetPassword(String email) async {
     await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
   }
@@ -130,6 +105,6 @@ class AuthController {
     await theUser.delete();
 
     _user.value = null;
-    _state.value = AuthState.signedOut;
+    _state.value = AuthStates.signedOut;
   }
 }

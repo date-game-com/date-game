@@ -31,7 +31,7 @@ class _DateGamePageState extends State<DateGamePage> {
       valueListenable: AuthController.instance.state,
       builder: (context, state, ___) {
         bool hideAppBar =
-            {AuthState.wantToSignIn, AuthState.wantToSignUp}.contains(state);
+            {AuthStates.wantToSignIn, AuthStates.wantToSignUp}.contains(state);
         return Scaffold(
           appBar: hideAppBar
               ? null
@@ -51,21 +51,21 @@ class _DateGamePageState extends State<DateGamePage> {
 class _DateGameBody extends StatelessWidget {
   const _DateGameBody(this.state);
 
-  final AuthState state;
+  final AuthStates state;
 
   @override
   Widget build(BuildContext context) {
     switch (state) {
-      case AuthState.signedIn:
+      case AuthStates.signedIn:
         return const SetAliasScreen();
       //return const DashboardScreen();
-      case AuthState.signedOut:
+      case AuthStates.signedOut:
         return const LandingScreen();
-      case AuthState.wantToSignIn:
-      case AuthState.wantToSignUp:
+      case AuthStates.wantToSignIn:
+      case AuthStates.wantToSignUp:
         return const AuthDialog();
 
-      case AuthState.wantToDeleteAccount:
+      case AuthStates.wantToDeleteAccount:
         throw UnimplementedError();
     }
   }
