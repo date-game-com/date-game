@@ -1,7 +1,7 @@
 import '../shared/auth_state.dart';
 import '../shared/exceptions.dart';
-import '../shared/primitives/docs.dart';
-import '../shared/primitives/fb_crud.dart';
+import '../shared/data/docs.dart';
+import '../shared/data/collections.dart';
 
 class AliasController {
   static const String asiasRules = 'Alias must be 4-40 characters long, '
