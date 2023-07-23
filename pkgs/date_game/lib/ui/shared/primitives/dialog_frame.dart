@@ -17,7 +17,7 @@ class DialogFrame extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const double boxWidth = 200;
-    const double boxHeight = 400;
+    const double boxHeight = 500;
 
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../logic/auth/controller.dart';
+import '../../../logic/features/auth.dart';
+import '../../../logic/shared/auth_state.dart';
 import '../../../logic/shared/exceptions.dart';
-import '../primitives/dialog_frame.dart';
+import '../../shared/primitives/dialog_frame.dart';
 
 class AuthDialog extends StatefulWidget {
   const AuthDialog({
@@ -37,16 +38,16 @@ class _AuthDialogState extends State<AuthDialog> {
   void initState() {
     super.initState();
 
-    switch (AuthController.instance.state.value) {
-      case AuthState.wantToSignIn:
-        _authScreen = _AuthDialog.createAccount;
-        break;
-      case AuthState.wantToSignUp:
+    switch (AuthState.instance.state.value) {
+      case AuthStates.wantToSignIn:
         _authScreen = _AuthDialog.signIn;
+        break;
+      case AuthStates.wantToSignUp:
+        _authScreen = _AuthDialog.createAccount;
         break;
       default:
         throw StateError(
-          'Unexpected value: ${AuthController.instance.state.value}',
+          'Unexpected value: ${AuthState.instance.state.value}',
         );
     }
   }
@@ -87,7 +88,7 @@ class _AuthDialogState extends State<AuthDialog> {
     return DialogFrame(
       title: _screenTitle(),
       content: _getScreen(context),
-      onClose: () => AuthController.instance.cancelSignIn(),
+      onClose: () => AuthState.instance.cancelSignIn(),
     );
   }
 
@@ -148,7 +149,7 @@ class _AuthDialogState extends State<AuthDialog> {
     required String fieldName,
     required Future<void> Function() submit,
   }) {
-    handleKey(RawKeyEvent key) {
+    void handleKey(RawKeyEvent key) {
       if (key is! RawKeyDownEvent) {
         return;
       }
@@ -169,11 +170,9 @@ class _AuthDialogState extends State<AuthDialog> {
         obscureText: hideFieldValue,
         controller: controller,
         autofocus: true,
-        onEditingComplete: () => {},
-        // it is important to have this handler to catch 'Enter'
-        decoration: InputDecoration(
-          labelText: fieldName,
-        ),
+        onEditingComplete: () =>
+            {}, // it is important to have this handler to catch 'Enter'
+        decoration: InputDecoration(labelText: fieldName),
       ),
     );
   }
@@ -184,7 +183,7 @@ class _AuthDialogState extends State<AuthDialog> {
         setState(() {
           _loading = true;
         });
-        await AuthController.instance.signUp(_emailController.text);
+        await AuthLogic.signUp(_emailController.text);
         setState(() {
           _loading = false;
         });
@@ -233,7 +232,7 @@ class _AuthDialogState extends State<AuthDialog> {
         setState(() {
           _loading = true;
         });
-        await AuthController.instance.signIn(
+        await AuthLogic.signIn(
           email: _emailController.text,
           password: _passwordcontroller.text,
         );
@@ -336,7 +335,7 @@ class _AuthDialogState extends State<AuthDialog> {
         setState(() {
           _loading = true;
         });
-        await AuthController.instance.resetPassword(_emailController.text);
+        await AuthLogic.resetPassword(_emailController.text);
         setState(() {
           _loading = false;
         });
