@@ -1,11 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'firebase_options.dart';
 import 'logic/shared/auth_state.dart';
-import 'logic/shared/primitives/utils.dart';
+import 'logic/shared/primitives/simple_items.dart';
 import 'ui/framework/date_game_page.dart';
 
 Completer? _initialized;
@@ -34,6 +35,16 @@ Future<void> initializeApp({bool fakeFirebase = false}) async {
 }
 
 Future<void> main(List<String> args) async {
+  // ignore: avoid_print
+  print('Date Game $version');
+  FlutterError.onError = (details) {
+    FlutterError.presentError(details);
+
+    // ignore: avoid_print
+    print('FlutterError.onError: $details');
+    exit(1);
+  };
+
   runApp(const App());
 }
 

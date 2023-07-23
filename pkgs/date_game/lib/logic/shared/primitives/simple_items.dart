@@ -1,5 +1,10 @@
 import 'package:flutter/foundation.dart';
 
+/// For debugging purposes.
+///
+/// Will be printed to console on startup.
+const version = 1;
+
 void checkFakingIsOk() {
   bool isRelease = true;
   assert(() {

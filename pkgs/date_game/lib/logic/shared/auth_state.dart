@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
 import 'data/collections.dart';
-import 'primitives/utils.dart';
+import 'primitives/simple_items.dart';
 
 enum AuthStates {
   loading,
@@ -32,23 +32,37 @@ class AuthState {
   }
 
   Future<void> handleUserChanged(User? newUser) async {
+    print(1);
     if (newUser == null) {
       _alias.value = null;
       _user.value = null;
       _state.value = AuthStates.signedOut;
+      print(2);
       return;
     }
 
     if (newUser.uid == _user.value?.uid) {
       _user.value = newUser;
+      print(3);
       return;
     }
 
     debugPrint('uid: ${newUser.uid}');
     _state.value = AuthStates.loading;
     _user.value = newUser;
-    _alias.value = (await Collections.person.query(newUser.uid))?.alias;
+    print(4);
+    try {
+      print(5);
+      _alias.value = (await Collections.person.query(newUser.uid))?.alias;
+      print(6);
+    } catch (e) {
+      // ignore: avoid_print
+      print('Error getting alias: $e');
+      rethrow;
+    }
+    print(7);
     _state.value = AuthStates.signedIn;
+    print(8);
   }
 
   ValueListenable<User?> get user => _user;
