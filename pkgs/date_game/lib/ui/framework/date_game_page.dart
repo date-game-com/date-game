@@ -4,9 +4,9 @@ import '../../logic/shared/auth_state.dart';
 import '../screens/alias_screen.dart';
 import '../screens/dashboard_screen.dart';
 import '../screens/landing_screen.dart';
-import '../shared/auth/auth_dialog.dart';
-import '../shared/auth/user_status.dart';
 import '../shared/primitives/simple_items.dart';
+import 'auth/auth_dialog.dart';
+import 'auth/user_status.dart';
 
 class DateGamePage extends StatefulWidget {
   const DateGamePage({super.key, required this.appInitialized});

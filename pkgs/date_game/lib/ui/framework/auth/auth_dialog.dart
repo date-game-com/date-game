@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import '../../../logic/features/auth.dart';
 import '../../../logic/shared/auth_state.dart';
 import '../../../logic/shared/exceptions.dart';
-import '../primitives/dialog_frame.dart';
+import '../../shared/primitives/dialog_frame.dart';
 
 class AuthDialog extends StatefulWidget {
   const AuthDialog({

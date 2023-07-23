@@ -34,8 +34,6 @@ class _SetAliasScreenState extends State<SetAliasScreen> {
       return;
     }
 
-    print('text is valid, checking availability');
-
     if (!await AliasLogic.isAliasAvailable(alias: text)) {
       if (_alias.text != text) return;
       setState(() {

@@ -47,8 +47,8 @@ class AuthState {
     debugPrint('uid: ${newUser.uid}');
     _state.value = AuthStates.loading;
     _user.value = newUser;
-    _state.value = AuthStates.signedIn;
     _alias.value = (await Collections.person.query(newUser.uid))?.alias;
+    _state.value = AuthStates.signedIn;
   }
 
   ValueListenable<User?> get user => _user;
