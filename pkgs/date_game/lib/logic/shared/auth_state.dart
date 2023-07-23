@@ -32,17 +32,23 @@ class AuthState {
   }
 
   Future<void> handleUserChanged(User? newUser) async {
+    if (newUser == null) {
+      _alias.value = null;
+      _user.value = null;
+      _state.value = AuthStates.signedOut;
+      return;
+    }
+
+    if (newUser.uid == _user.value?.uid) {
+      _user.value = newUser;
+      return;
+    }
+
+    debugPrint('uid: ${newUser.uid}');
     _state.value = AuthStates.loading;
-    if (newUser?.uid != _user.value?.uid) debugPrint('uid: ${newUser?.uid}');
-
-    _alias.value = await queryDoc<String>(
-      collection: Collections.person,
-      id: newUser?.uid,
-      field: 'alias',
-    );
-
     _user.value = newUser;
-    _state.value = newUser == null ? AuthStates.signedOut : AuthStates.signedIn;
+    _state.value = AuthStates.signedIn;
+    _alias.value = (await Collections.person.query(newUser.uid))?.alias;
   }
 
   ValueListenable<User?> get user => _user;

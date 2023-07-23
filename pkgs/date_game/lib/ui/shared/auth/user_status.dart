@@ -58,9 +58,7 @@ class _UserDropDown extends StatelessWidget {
             children: [
               Text('Logged in as $email'),
               TextButton(
-                onPressed: () {
-                  AuthController().signOut();
-                },
+                onPressed: () => AuthLogic.signOut(),
                 child: const Text('Log out'),
               ),
               TextButton(

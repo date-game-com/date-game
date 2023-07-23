@@ -65,7 +65,7 @@ class _AppState extends State<App> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: DateGamePage(initialized: _initialized!.isCompleted),
+      home: DateGamePage(appInitialized: _initialized!.isCompleted),
       debugShowCheckedModeBanner: false,
     );
   }

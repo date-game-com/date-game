@@ -16,14 +16,14 @@ class DataCollection<T extends DateGameDoc> {
 
   String get name => T.toString();
 
-  Future<void> setDoc({
+  Future<void> set({
     required String id,
     required T doc,
   }) async {
     await _firestore.collection(name).doc(id).set(doc.toJson());
   }
 
-  Future<T?> queryDoc(String id) async {
+  Future<T?> query(String id) async {
     final json = (await _firestore.collection(name).doc(id).get()).data();
     if (json == null) return null;
     return parser(json);

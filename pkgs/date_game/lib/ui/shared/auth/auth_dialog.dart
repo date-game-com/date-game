@@ -149,7 +149,7 @@ class _AuthDialogState extends State<AuthDialog> {
     required String fieldName,
     required Future<void> Function() submit,
   }) {
-    handleKey(RawKeyEvent key) {
+    void handleKey(RawKeyEvent key) {
       if (key is! RawKeyDownEvent) {
         return;
       }
@@ -170,11 +170,9 @@ class _AuthDialogState extends State<AuthDialog> {
         obscureText: hideFieldValue,
         controller: controller,
         autofocus: true,
-        onEditingComplete: () => {},
-        // it is important to have this handler to catch 'Enter'
-        decoration: InputDecoration(
-          labelText: fieldName,
-        ),
+        onEditingComplete: () =>
+            {}, // it is important to have this handler to catch 'Enter'
+        decoration: InputDecoration(labelText: fieldName),
       ),
     );
   }
@@ -185,7 +183,7 @@ class _AuthDialogState extends State<AuthDialog> {
         setState(() {
           _loading = true;
         });
-        await AuthController().signUp(_emailController.text);
+        await AuthLogic.signUp(_emailController.text);
         setState(() {
           _loading = false;
         });
@@ -234,7 +232,7 @@ class _AuthDialogState extends State<AuthDialog> {
         setState(() {
           _loading = true;
         });
-        await AuthController().signIn(
+        await AuthLogic.signIn(
           email: _emailController.text,
           password: _passwordcontroller.text,
         );
@@ -337,7 +335,7 @@ class _AuthDialogState extends State<AuthDialog> {
         setState(() {
           _loading = true;
         });
-        await AuthController().resetPassword(_emailController.text);
+        await AuthLogic.resetPassword(_emailController.text);
         setState(() {
           _loading = false;
         });

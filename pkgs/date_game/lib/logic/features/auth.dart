@@ -1,21 +1,25 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 
 import '../shared/auth_state.dart';
 import '../shared/exceptions.dart';
 
-class AuthController {
-  Future<void> signIn({required String email, required String password}) async {
+class AuthLogic {
+  AuthLogic._();
+
+  static Future<void> signIn({
+    required String email,
+    required String password,
+  }) async {
     await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
   }
 
-  Future<void> signOut() async {
+  static Future<void> signOut() async {
     AuthState.instance.setSignedOut();
     await FirebaseAuth.instance.signOut();
   }
 
-  Future<void> signUp(String email) async {
+  static Future<void> signUp(String email) async {
     String randomPassword() => DateTime.now().microsecondsSinceEpoch.toString();
 
     try {
@@ -29,11 +33,11 @@ class AuthController {
     }
   }
 
-  Future<void> resetPassword(String email) async {
+  static Future<void> resetPassword(String email) async {
     await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
   }
 
-  Future<void> delete({required String password}) async {
+  static Future<void> delete({required String password}) async {
     final theUser = AuthState.instance.user.value;
     assert(theUser != null);
     if (theUser == null) return;

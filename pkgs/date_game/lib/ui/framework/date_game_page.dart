@@ -8,9 +8,9 @@ import '../shared/auth/user_status.dart';
 import '../shared/primitives/simple_items.dart';
 
 class DateGamePage extends StatefulWidget {
-  const DateGamePage({super.key, required this.initialized});
+  const DateGamePage({super.key, required this.appInitialized});
 
-  final bool initialized;
+  final bool appInitialized;
 
   @override
   State<DateGamePage> createState() => _DateGamePageState();
@@ -19,7 +19,7 @@ class DateGamePage extends StatefulWidget {
 class _DateGamePageState extends State<DateGamePage> {
   @override
   Widget build(BuildContext context) {
-    if (!widget.initialized) {
+    if (!widget.appInitialized) {
       return const Scaffold(
         body: Center(
           child: Progress(),
@@ -64,9 +64,10 @@ class _DateGameBody extends StatelessWidget {
       case AuthStates.wantToSignIn:
       case AuthStates.wantToSignUp:
         return const AuthDialog();
-
       case AuthStates.wantToDeleteAccount:
-        throw UnimplementedError();
+        return const Placeholder();
+      case AuthStates.loading:
+        return const Progress();
     }
   }
 }

@@ -1,41 +1,37 @@
 import '../shared/auth_state.dart';
-import '../shared/exceptions.dart';
-import '../shared/data/docs.dart';
 import '../shared/data/collections.dart';
+import '../shared/data/docs.dart';
+import '../shared/exceptions.dart';
 
-class AliasController {
-  static const String asiasRules = 'Alias must be 4-40 characters long, '
-      'and contain only lowercase letters and numbers.';
+class AliasLogic {
+  AliasLogic._();
 
-  bool isAliasValid(String alias) {
-    return RegExp(r'^[0-9a-z]+$').hasMatch(alias) &&
+  static const String asiasRules = 'Alias should be 4-40 characters long, '
+      'and may contain english letters, numbers and signs _ and -.';
+
+  static bool isAliasValid(String alias) {
+    return RegExp(r'^[0-9a-z-_]+$', caseSensitive: false).hasMatch(alias) &&
         alias.length >= 4 &&
         alias.length <= 40;
   }
 
-  Future<bool> isAliasAvailable({required String alias}) async {
-    final doc = await queryDoc(
-      collection: Collections.alias,
-      id: alias,
-    );
-    return doc?.isEmpty ?? true;
+  static Future<bool> isAliasAvailable({required String alias}) async {
+    final aliasDoc = await Collections.alias.query(alias);
+    return aliasDoc == null;
   }
 
-  Future<void> createAlias(String alias) async {
+  static Future<void> createAlias(String alias) async {
     if (!isAliasValid(alias)) throw UiMessageException(asiasRules);
     if (!(await isAliasAvailable(alias: alias))) {
       throw UiMessageException('Alias is already taken.');
     }
-    await setDoc(
-      collection: Collections.alias,
+    await Collections.alias.set(
       id: alias,
-      json: Alias(alias: alias).toJson(),
+      doc: Alias(alias: alias),
     );
-    await setDoc(
-      collection: Collections.person,
+    await Collections.person.set(
       id: AuthState.instance.user.value!.uid,
-      json: Person(alias: alias).toJson(),
+      doc: Person(alias: alias),
     );
-    AuthState.instance.setAlias(alias);
   }
 }
