@@ -17,6 +17,7 @@ jobs:
       - name: install Flutter sdk
         uses: subosito/flutter-action@48cafc24713cca54bbe03cdc3a423187d413aafa
         with:
+          # firebase hosting does not support master
           channel: 'stable'
 
       - name: version
