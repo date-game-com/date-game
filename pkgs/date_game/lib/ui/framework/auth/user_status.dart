@@ -34,49 +34,56 @@ class _UserDropDown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String label;
-    final alias = AuthState.instance.alias.value;
-    if (alias == null) {
-      label = 'Logged in as ${user.email ?? '?'}';
-    } else {
-      label = '@$alias';
-    }
+    return ValueListenableBuilder<String?>(
+      valueListenable: AuthState.instance.alias,
+      builder: (context, alias, _) {
+        final String label;
+        if (alias == null) {
+          label = 'Logged in as ${user.email ?? '?'}';
+        } else {
+          label = '@$alias';
+        }
 
-    return MenuAnchor(
-      builder:
-          (BuildContext context, MenuController controller, Widget? child) {
-        return TextButton(
-          onPressed: () {
-            if (controller.isOpen) {
-              controller.close();
-            } else {
-              controller.open();
-            }
+        return MenuAnchor(
+          builder: (
+            BuildContext context,
+            MenuController controller,
+            Widget? child,
+          ) {
+            return TextButton(
+              onPressed: () {
+                if (controller.isOpen) {
+                  controller.close();
+                } else {
+                  controller.open();
+                }
+              },
+              child: const Icon(Icons.face),
+            );
           },
-          child: const Icon(Icons.face),
+          menuChildren: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(label),
+                  TextButton(
+                    onPressed: () => AuthLogic.signOut(),
+                    child: const Text('Log out'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      AuthState.instance.requestDeleteAccount();
+                    },
+                    child: const Text('Delete account'),
+                  ),
+                ],
+              ),
+            ),
+          ],
         );
       },
-      menuChildren: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(label),
-              TextButton(
-                onPressed: () => AuthLogic.signOut(),
-                child: const Text('Log out'),
-              ),
-              TextButton(
-                onPressed: () {
-                  AuthState.instance.requestDeleteAccount();
-                },
-                child: const Text('Delete account'),
-              ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 }
