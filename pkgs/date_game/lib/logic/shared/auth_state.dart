@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:logging/logging.dart';
 
 import 'data/collections.dart';
-import 'primitives/utils.dart';
+import 'primitives/simple_items.dart';
+
+var _log = Logger('auth_state.dart');
 
 enum AuthStates {
   loading,
@@ -14,12 +17,6 @@ enum AuthStates {
 }
 
 class AuthState {
-  static late final AuthState instance;
-
-  static void initialize({bool fake = false}) {
-    instance = AuthState._(fake: fake);
-  }
-
   AuthState._({bool fake = false}) {
     if (fake) {
       checkFakingIsOk();
@@ -29,6 +26,12 @@ class AuthState {
     FirebaseAuth.instance.authStateChanges().listen(handleUserChanged);
     FirebaseAuth.instance.userChanges().listen(handleUserChanged);
     FirebaseAuth.instance.idTokenChanges().listen(handleUserChanged);
+  }
+
+  static late final AuthState instance;
+
+  static void initialize({bool fake = false}) {
+    instance = AuthState._(fake: fake);
   }
 
   Future<void> handleUserChanged(User? newUser) async {
@@ -44,7 +47,7 @@ class AuthState {
       return;
     }
 
-    debugPrint('uid: ${newUser.uid}');
+    _log.info('uid: ${newUser.uid}');
     _state.value = AuthStates.loading;
     _user.value = newUser;
     _alias.value = (await Collections.person.query(newUser.uid))?.alias;

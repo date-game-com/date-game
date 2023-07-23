@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
+import 'package:logging/logging.dart';
+
+var _log = Logger('exceptions.dart');
 
 /// Some possible values of [FirebaseAuthException.code].
 enum FirebaseErrorCodes {
@@ -20,13 +22,13 @@ String exceptionToUiMessage(Object? exception) {
     return exception.message;
   }
 
-  debugPrint('Unexpected error of type ${exception.runtimeType}: $exception');
+  _log.severe('Unexpected error of type ${exception.runtimeType}: $exception');
 
   return 'Unexpected error. Check console for details.';
 }
 
 /// Exception that showld be shown to the user.
 class UiMessageException implements Exception {
-  String message;
   UiMessageException(this.message);
+  String message;
 }
