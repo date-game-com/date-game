@@ -12,6 +12,13 @@ Xcode: `open ios/Runner.xcworkspace`
 
 https://date-game-com.web.app
 
+For flutter:
+```
+git checkout -b stable upstream/stable
+```
+
+For date_game
+
 ```
 firebase deploy
 ```

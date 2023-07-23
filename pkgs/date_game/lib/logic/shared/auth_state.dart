@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:logging/logging.dart';
 
 import 'data/collections.dart';
 import 'primitives/simple_items.dart';
+
+var _log = Logger('auth_state.dart');
 
 enum AuthStates {
   loading,
@@ -14,12 +17,6 @@ enum AuthStates {
 }
 
 class AuthState {
-  static late final AuthState instance;
-
-  static void initialize({bool fake = false}) {
-    instance = AuthState._(fake: fake);
-  }
-
   AuthState._({bool fake = false}) {
     if (fake) {
       checkFakingIsOk();
@@ -31,38 +28,30 @@ class AuthState {
     FirebaseAuth.instance.idTokenChanges().listen(handleUserChanged);
   }
 
+  static late final AuthState instance;
+
+  static void initialize({bool fake = false}) {
+    instance = AuthState._(fake: fake);
+  }
+
   Future<void> handleUserChanged(User? newUser) async {
-    print(1);
     if (newUser == null) {
       _alias.value = null;
       _user.value = null;
       _state.value = AuthStates.signedOut;
-      print(2);
       return;
     }
 
     if (newUser.uid == _user.value?.uid) {
       _user.value = newUser;
-      print(3);
       return;
     }
 
-    debugPrint('uid: ${newUser.uid}');
+    _log.info('uid: ${newUser.uid}');
     _state.value = AuthStates.loading;
     _user.value = newUser;
-    print(4);
-    try {
-      print(5);
-      _alias.value = (await Collections.person.query(newUser.uid))?.alias;
-      print(6);
-    } catch (e) {
-      // ignore: avoid_print
-      print('Error getting alias: $e');
-      rethrow;
-    }
-    print(7);
+    _alias.value = (await Collections.person.query(newUser.uid))?.alias;
     _state.value = AuthStates.signedIn;
-    print(8);
   }
 
   ValueListenable<User?> get user => _user;

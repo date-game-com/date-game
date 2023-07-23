@@ -8,6 +8,9 @@ linter:
     - prefer_relative_imports
     - prefer_single_quotes
     - require_trailing_commas
+    - sort_pub_dependencies
+    - sort_unnamed_constructors_first
+    - sort_child_properties_last
     - unawaited_futures
 
 # Additional information about this file can be found at

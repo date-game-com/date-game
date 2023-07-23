@@ -8,13 +8,12 @@ enum _Json {
 
 /// Id is user id.
 class Person extends DateGameDoc {
-  final String alias;
-
   Person({
     required this.alias,
   });
 
   Person.fromJson(Map<String, dynamic> json) : alias = json[_Json.alias.name];
+  final String alias;
 
   @override
   Map<String, dynamic> toJson() => {_Json.alias.name: alias};
@@ -24,13 +23,12 @@ class Person extends DateGameDoc {
 ///
 /// Id is the alias.
 class Alias extends DateGameDoc {
-  final String alias;
-
   Alias({
     required this.alias,
   });
 
   Alias.fromJson(Map<String, dynamic> json) : alias = json[_Json.alias.name];
+  final String alias;
 
   @override
   Map<String, dynamic> toJson() => {_Json.alias.name: alias};

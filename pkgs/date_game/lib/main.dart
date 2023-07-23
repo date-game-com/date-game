@@ -3,12 +3,19 @@ import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 
 import 'firebase_options.dart';
 import 'logic/shared/auth_state.dart';
 import 'logic/shared/primitives/simple_items.dart';
 import 'ui/framework/date_game_page.dart';
 
+/// For debugging purposes.
+///
+/// Will be printed to console on startup.
+const _version = 5;
+
+var _log = Logger('main.dart');
 Completer? _initialized;
 
 Future<void> initializeApp({bool fakeFirebase = false}) async {
@@ -30,18 +37,22 @@ Future<void> initializeApp({bool fakeFirebase = false}) async {
 
     _initialized!.complete();
   } catch (e) {
-    debugPrint('Error initializing app: $e');
+    _log.severe('Error initializing app: $e');
   }
 }
 
 Future<void> main(List<String> args) async {
-  // ignore: avoid_print
-  print('Date Game $version');
+  Logger.root.level = Level.ALL;
+  Logger.root.onRecord.listen(
+    // ignore: avoid_print
+    (LogRecord r) => print(r.message),
+  );
+
+  _log.info('Date Game $_version');
   FlutterError.onError = (details) {
     FlutterError.presentError(details);
 
-    // ignore: avoid_print
-    print('FlutterError.onError: $details');
+    _log.severe('FlutterError.onError: $details');
     exit(1);
   };
 
