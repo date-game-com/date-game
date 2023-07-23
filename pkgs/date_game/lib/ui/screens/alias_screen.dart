@@ -59,7 +59,7 @@ class _SetAliasScreenState extends State<SetAliasScreen> {
       title: 'Choose unique alias',
       child: Column(
         children: [
-          const Text('Note, that alias cannot be modified later. '
+          const Text('Alias cannot be modified later. '
               'To change alias, you will need to recreate your account.'),
           SizedBox(
             height: 50,

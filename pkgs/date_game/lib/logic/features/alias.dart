@@ -33,5 +33,6 @@ class AliasLogic {
       id: AuthState.instance.user.value!.uid,
       doc: Person(alias: alias),
     );
+    AuthState.instance.setAlias(alias);
   }
 }

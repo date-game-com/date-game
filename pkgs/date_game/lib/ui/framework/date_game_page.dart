@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../logic/shared/auth_state.dart';
 import '../screens/alias_screen.dart';
+import '../screens/dashboard_screen.dart';
 import '../screens/landing_screen.dart';
 import '../shared/auth/auth_dialog.dart';
 import '../shared/auth/user_status.dart';
@@ -30,17 +31,13 @@ class _DateGamePageState extends State<DateGamePage> {
     return ValueListenableBuilder(
       valueListenable: AuthState.instance.state,
       builder: (context, state, ___) {
-        bool hideAppBar =
-            {AuthStates.wantToSignIn, AuthStates.wantToSignUp}.contains(state);
         return Scaffold(
-          appBar: hideAppBar
-              ? null
-              : AppBar(
-                  backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-                  centerTitle: false,
-                  title: const Text('Date Game  (under construction)'),
-                  actions: const [UserStatus()],
-                ),
+          appBar: AppBar(
+            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+            centerTitle: false,
+            title: const Text('Date Game  (under construction)'),
+            actions: const [UserStatus()],
+          ),
           body: _DateGameBody(state),
         );
       },
@@ -57,8 +54,7 @@ class _DateGameBody extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (state) {
       case AuthStates.signedIn:
-        return const SetAliasScreen();
-      //return const DashboardScreen();
+        return const _AliasOrDashboard();
       case AuthStates.signedOut:
         return const LandingScreen();
       case AuthStates.wantToSignIn:
@@ -69,5 +65,20 @@ class _DateGameBody extends StatelessWidget {
       case AuthStates.loading:
         return const Progress();
     }
+  }
+}
+
+class _AliasOrDashboard extends StatelessWidget {
+  const _AliasOrDashboard();
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<String?>(
+      valueListenable: AuthState.instance.alias,
+      builder: (context, alias, __) {
+        if (alias == null) return const SetAliasScreen();
+        return const DashboardScreen();
+      },
+    );
   }
 }

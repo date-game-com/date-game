@@ -5,13 +5,15 @@ service cloud.firestore {
     match /{collection}/{id} {
       allow create:
         if request.auth.uid == id
+        || collection == "Alias"
       allow update:
         if request.auth.uid == id
       allow get, delete:
         if resource == null
         || request.auth.uid == id
+        || collection == "Alias"
       allow list:
-        if collection == "XfCard"
+        if collection == "something"
     }
   }
 }

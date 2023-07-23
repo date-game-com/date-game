@@ -17,7 +17,7 @@ class Person extends DateGameDoc {
   Person.fromJson(Map<String, dynamic> json) : alias = json[_Json.alias.name];
 
   @override
-  Map<String, dynamic> toJson() => {'_Json.alias.name': alias};
+  Map<String, dynamic> toJson() => {_Json.alias.name: alias};
 }
 
 /// Index of taken aliases, one doc per alias.
@@ -33,5 +33,5 @@ class Alias extends DateGameDoc {
   Alias.fromJson(Map<String, dynamic> json) : alias = json[_Json.alias.name];
 
   @override
-  Map<String, dynamic> toJson() => {'_Json.alias.name': alias};
+  Map<String, dynamic> toJson() => {_Json.alias.name: alias};
 }

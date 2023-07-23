@@ -34,7 +34,13 @@ class _UserDropDown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final email = user.email ?? '?';
+    final String label;
+    final alias = AuthState.instance.alias.value;
+    if (alias == null) {
+      label = 'Logged in as ${user.email ?? '?'}';
+    } else {
+      label = '@$alias';
+    }
 
     return MenuAnchor(
       builder:
@@ -56,7 +62,7 @@ class _UserDropDown extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Logged in as $email'),
+              Text(label),
               TextButton(
                 onPressed: () => AuthLogic.signOut(),
                 child: const Text('Log out'),
