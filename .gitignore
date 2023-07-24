@@ -49,3 +49,4 @@ pkgs/**/macos/Flutter/Flutter-Debug.xcconfig
 pkgs/**/macos/Podfile.lock
 pkgs/**/test/failures/**
 pkgs/**/macos/Flutter/GeneratedPluginRegistrant.swift
+pkgs/fb_functions/package-lock.json
