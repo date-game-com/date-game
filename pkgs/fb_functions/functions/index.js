@@ -1,35 +1,53 @@
-// The Cloud Functions for Firebase SDK to create Cloud Functions and triggers.
 const {logger, pubsub} = require("firebase-functions");
 const {onRequest} = require("firebase-functions/v2/https");
 const {onDocumentCreated} = require("firebase-functions/v2/firestore");
-
-// The Firebase Admin SDK to access Firestore.
 const {initializeApp} = require("firebase-admin/app");
-const {getFirestore} = require("firebase-admin/firestore");
+const {getFirestore, messaging} = require("firebase-admin/firestore");
 
 initializeApp();
 
-// Take the text parameter passed to this HTTP endpoint and insert it into
-// Firestore under the path /messages/:documentId/original
+exports.sendMessage = onRequest(async (req, res) => {
+  // https://firebase.google.com/codelabs/firebase-cloud-functions
+
+  const payload = {
+    notification: {
+      title: "Hello from Firebase!",
+      body: "This is a Firebase Cloud Messaging Topic Message!",
+      // icon: "/images/profile_placeholder.png",
+      // click_action: `https://${process.env.GCLOUD_PROJECT}.firebaseapp.com`,
+    },
+  };
+
+  // Get the list of device tokens.
+  const allTokens = await getFirestore().collection("FcmTokens").get();
+  const tokens = [];
+  allTokens.forEach((tokenDoc) => {
+    tokens.push(tokenDoc.id);
+  });
+
+  if (tokens.length > 0) {
+    // Send notifications to all tokens.
+    await messaging().sendToDevice(tokens, payload);
+    logger.log("Notifications have been sent and tokens cleaned up.");
+  }
+
+  res.json({result: `Message sent.`});
+});
+
 exports.addmessage = onRequest(async (req, res) => {
-  // Grab the text parameter.
+  // From .../addMessage?text=uppercasemetoo
   const original = req.query.text;
-  // Push the new message into Firestore using the Firebase Admin SDK.
+
   const writeResult = await getFirestore()
       .collection("messages")
       .add({original: original});
-    // Send back a message that we've successfully written the message
+
   res.json({result: `Message with ID: ${writeResult.id} added.`});
 });
 
-// Listens for new messages added to /messages/:documentId/original
-// and saves an uppercased version of the message
-// to /messages/:documentId/uppercase
 exports.makeuppercase = onDocumentCreated("/messages/{documentId}", (event) => {
-  // Grab the current value of what was written to Firestore.
   const original = event.data.data().original;
 
-  // Access the parameter `{documentId}` with `event.params`
   logger.log("Uppercasing", event.params.documentId, original);
 
   const uppercase = original.toUpperCase();
@@ -42,24 +60,8 @@ exports.makeuppercase = onDocumentCreated("/messages/{documentId}", (event) => {
 });
 
 exports.process = pubsub.schedule("every 1 minutes").onRun(async () => {
-  console.log("This will be run every minute!");
+  logger.log("This will be run every minute!");
   await getFirestore()
       .collection("messages")
       .add({hello: "world!"});
 });
-
-// // Run once a day at midnight, to clean up the users
-// // Manually run the task here https://console.cloud.google.com/cloudscheduler
-// exports.accountcleanup = onSchedule("every day 00:00", async (event) => {
-//   // Fetch all user details.
-//   const inactiveUsers = await getInactiveUsers();
-
-//   // Use a pool so that we delete maximum `MAX_CONCURRENT` users in parallel.
-//   const promisePool = new PromisePool(
-//       () => deleteInactiveUser(inactiveUsers),
-//       MAX_CONCURRENT,
-//   );
-//   await promisePool.start();
-
-//   logger.log("User cleanup finished");
-// });
