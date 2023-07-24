@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -32,7 +33,7 @@ class _AuthDialogState extends State<AuthDialog> {
   final FocusNode _emailNode = FocusNode();
   final FocusNode _passwordNode = FocusNode();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordcontroller = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   void initState() {
@@ -41,6 +42,11 @@ class _AuthDialogState extends State<AuthDialog> {
     switch (AuthState.instance.state.value) {
       case AuthStates.wantToSignIn:
         _authScreen = _AuthDialog.signIn;
+        if (!kReleaseMode) {
+          _emailController.text = 'polina.c@live.com';
+          _passwordController.text = 'llllll';
+        }
+
         break;
       case AuthStates.wantToSignUp:
         _authScreen = _AuthDialog.createAccount;
@@ -234,7 +240,7 @@ class _AuthDialogState extends State<AuthDialog> {
         });
         await AuthLogic.signIn(
           email: _emailController.text,
-          password: _passwordcontroller.text,
+          password: _passwordController.text,
         );
         setState(() {
           _loading = false;
@@ -259,7 +265,7 @@ class _AuthDialogState extends State<AuthDialog> {
           submit: submit,
         ),
         _buildTextBox(
-          controller: _passwordcontroller,
+          controller: _passwordController,
           hideFieldValue: true,
           currentNode: _passwordNode,
           nextNode: null,
