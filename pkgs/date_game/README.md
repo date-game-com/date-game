@@ -54,10 +54,10 @@ Drop `build/ios/ipa/*.ipa` to Transporter.
   - integration_test
   - assets
 3. Update description in web/index
-4. Update package name
-5. Update icon
-6. Configure Firebase
-4. Enable outgoing connections
+4. Update package name (steps below)
+5. Update icon (steps below)
+6. Configure Firebase (steps below)
+4. Enable outgoing connections (steps below)
 
 
 ### Regenerate icons
